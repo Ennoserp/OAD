@@ -56,7 +56,7 @@ void afficher_instance(T_instance&);
 void creer_prime(T_instance&);
 
 void evaluer(T_solution&, T_instance&);
-void recherche_locale(T_solution&, T_instance&);
+void recherche_locale(T_solution& sol, T_instance& instance);
 void generer_vecteur_alea(T_solution&, T_instance&);
 void afficher_vecteur(T_solution&, T_instance&);
 void copie(int Tableau_Original[], int Tableau_Copie[]);

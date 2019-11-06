@@ -9,12 +9,13 @@ int lire_fichier(string nom_fichier, T_instance& instance) {
 
 	for (int i = 0; i < instance.nb_piece; ++i) {
 		for (int j = 0; j < instance.nb_machine; ++j) {
-			fichier >> instance.m[i][j];
-			fichier >> instance.p[i][j];
+			fichier >> instance.m_prim[i * instance.nb_machine + j];
+			fichier >> instance.p_prim[i * instance.nb_machine + j];
 		}
 	}
 	fichier.close();
 	instance.NT = instance.nb_machine * instance.nb_piece;
+
 	return 1;
 }
 
@@ -72,12 +73,16 @@ void evaluer(T_solution& sol, T_instance& instance) {
 	}
 
 	//algo
-	for (int i = 1; i <= instance.NT; i++) {
-		ind_j = sol.V[i];
+	for (int i = 0; i < instance.NT; i++) {
+	
 
+		ind_j = sol.V[i];
 		instance.N[ind_j] = instance.N[ind_j] + 1;
 		pos = T[ind_j-1][instance.N[ind_j]-1];
-
+		if (instance.N[9] == 5)
+		{
+			int u = 0;
+		}
 		if (instance.N[ind_j] > 1) { //alors on est deja passe par la
 			prec = pos - 1;
 			if (sol.st[prec] + instance.p_prim[prec] > sol.st[pos]) {
@@ -121,18 +126,18 @@ void recherche_locale(T_solution& sol, T_instance& instance) {
 	int position_i = sol.V[i];
 	int position_j = sol.V[j];
 	
-	while((j != -1 ) && (nb_iteration < itmax)) // != -1
+	while((j != 0 ) && (nb_iteration < itmax)) // != -1
 	{
 		nb_iteration++;
 		if(instance.m_prim[i] == instance.m_prim[j])
 		{
 			//Calculer la position de i et de j pour faire la permutation
-      position(instance, sol, i, j, position_i, position_j);
+			position(instance, sol, i, j, position_i, position_j);
 
-      T_solution solution_nouv;
-      init_solution(instance, solution_nouv);
+			T_solution solution_nouv;
+			init_solution(instance, solution_nouv);
 
-      copie(sol.V,solution_nouv.V);
+			copie(sol.V,solution_nouv.V);
 			solution_nouv.V[position_i] = sol.V[position_j];
 			solution_nouv.V[position_j] = sol.V[position_i];
 
@@ -212,23 +217,22 @@ void copie(int Tableau_Original[], int Tableau_Copie[])
 
 void init_solution(T_instance& instance, T_solution& solution)
 {
-	int i, j;
 
 	generer_vecteur_alea(solution, instance);
 
-	for (i = 0; i < instance.nb_piece; i++)
+	for (int i = 0; i < instance.nb_piece; i++)
 	{
 		solution.n[i] = 0;
 	}
 
-	for (i = 0; i < instance.nb_machine; i++)
+	for (int i = 0; i < instance.nb_machine; i++)
 	{
 		solution.MP[i] = -1;
 	}
 
-	for (i = 0; i < instance.nb_piece; i++)
+	for (int i = 0; i < instance.nb_piece; i++)
 	{
-		for (j = 0; j < instance.nb_machine; j++)
+		for (int j = 0; j < instance.nb_machine; j++)
 		{
 			solution.T[i][j] = i * instance.nb_machine + j;
 			solution.st[i * instance.nb_machine + j] = 0;

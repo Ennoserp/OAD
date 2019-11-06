@@ -29,6 +29,48 @@
     <Text Include="test_lax.txt">
       <Filter>Fichiers de ressources</Filter>
     </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la01.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la02.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la03.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la04.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la05.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la06.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la07.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la08.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la09.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la10.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la16.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la26.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la35.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la36.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Jobshop.hpp">

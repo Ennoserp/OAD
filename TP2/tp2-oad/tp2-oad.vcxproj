@@ -90,6 +90,10 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <HeapReserveSize>123456789</HeapReserveSize>
+      <HeapCommitSize>123456789</HeapCommitSize>
+      <StackReserveSize>123456789</StackReserveSize>
+      <StackCommitSize>123456789</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -127,6 +131,20 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la01.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la02.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la03.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la04.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la05.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la06.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la07.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la08.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la09.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la10.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la16.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la26.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la35.txt" />
+    <Text Include="..\..\..\..\..\Desktop\Informatique\la36.txt" />
     <Text Include="test.txt" />
     <Text Include="test_lax.txt" />
   </ItemGroup>

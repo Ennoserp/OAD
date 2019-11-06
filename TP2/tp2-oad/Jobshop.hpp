@@ -38,7 +38,7 @@ typedef struct T_solution {
 	int st[max] = { 0 }; //tableau des starting time
 	int pred[max] = { -1 }; //tableau des prédécesseurs
 	int T[m_max][n_max];
-	int n[m_max];
+	int n[n_max];
 	int MP[m_max];
 	int total;
 	int dernier_sommet;

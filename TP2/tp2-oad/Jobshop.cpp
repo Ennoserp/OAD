@@ -77,13 +77,13 @@ void evaluer(T_solution& sol, T_instance& instance) {
 	
 
 		ind_j = sol.V[i];
-		instance.N[ind_j] = instance.N[ind_j] + 1;
-		pos = T[ind_j-1][instance.N[ind_j]-1];
-		if (instance.N[9] == 5)
+		sol.n[ind_j] = sol.n[ind_j] + 1;
+		pos = T[ind_j-1][sol.n[ind_j]-1];
+		if (sol.n[9] == 5)
 		{
 			int u = 0;
 		}
-		if (instance.N[ind_j] > 1) { //alors on est deja passe par la
+		if (sol.n[ind_j] > 1) { //alors on est deja passe par la
 			prec = pos - 1;
 			if (sol.st[prec] + instance.p_prim[prec] > sol.st[pos]) {
 				sol.st[pos] = sol.st[prec] + instance.p_prim[prec];
@@ -220,7 +220,7 @@ void init_solution(T_instance& instance, T_solution& solution)
 
 	generer_vecteur_alea(solution, instance);
 
-	for (int i = 0; i < instance.nb_piece; i++)
+	for (int i = 0; i <= instance.nb_piece; i++)
 	{
 		solution.n[i] = 0;
 	}

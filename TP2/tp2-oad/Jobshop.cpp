@@ -1,7 +1,4 @@
-﻿#include <iostream>
-#include <fstream>
-#include <time.h>
-#include "Jobshop.hpp"
+﻿#include "Jobshop.hpp"
 
 using namespace std;
 
@@ -68,7 +65,6 @@ void evaluer(T_solution& sol, T_instance& instance) {
 	for (int i = 0; i < instance.nb_piece; ++i) {
 		for (int j = 0; j < instance.nb_machine; ++j) {
 			T[i][j] = i * instance.nb_machine + j + 1;
-			cout << T[i][j] << " ";
 		}
 	}
 	for (int i = 0; i < instance.nb_machine; ++i) {
@@ -110,7 +106,7 @@ void recherche_locale(T_solution& sol, T_instance& instance, int nb_iteration) {
 	int position_i = sol.V[i];
 	int position_j = sol.V[j];
 	int V_prim[11];
-	/*
+	
 	while((j != 0 ) && (nb_iteration < itmax))
 	{
 		nb_iteration++;
@@ -145,7 +141,7 @@ void recherche_locale(T_solution& sol, T_instance& instance, int nb_iteration) {
 			i = j;
 			j = sol.pred[j];
 		}
-	}*/
+	}
 
 
 }

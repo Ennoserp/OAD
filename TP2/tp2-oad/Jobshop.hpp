@@ -1,6 +1,9 @@
 #ifndef JOBSHOP
 #define JOBSHOP
 
+#include <iostream>
+#include <fstream>
+#include <time.h>
 #include <string>
 
 const int n_max=50;
@@ -16,7 +19,7 @@ typedef struct T_instance {
 
 	int nb_piece; //nb pieces
 	int nb_machine; //nb machines
-	int NT;// = nb_machine * nb_piece; //nb opérations
+	int NT; // = nb_machine * nb_piece; //nb opérations
 
 	int m[n_max][m_max];
 	int p[n_max][m_max];
@@ -31,10 +34,10 @@ typedef struct T_instance {
 
 typedef struct T_solution {
 
-	int V[10] = { 0, 1, 2, 2, 3, 3, 1, 2, 3, 1 }; //vecteur de Bierwith
+	int V[10] = { 0, 1, 2, 2, 3, 3, 1, 2, 3, 1 }; //vecteur de Bierwirth
 	int st[max] = { 0 }; //tableau des starting time
 	int pred[max] = { -1 }; //tableau des prédécesseurs
-	int cmax;
+	int chemin_max; //taille du plus long chemin
 
 }T_solution;
 

@@ -1,7 +1,2 @@
 ﻿  Jobshop.cpp
-C:\Users\jaelv\Documents\GitHub\OAD\TP2\tp2-oad\Jobshop.cpp(112,6): warning C4101: 'V_prim' : variable locale non référencée
-  main.cpp
-C:\Users\jaelv\Documents\GitHub\OAD\TP2\tp2-oad\Jobshop.cpp(107,6): warning C4101: 'temp' : variable locale non référencée
-  Génération de code en cours...
-C:\Users\jaelv\Documents\GitHub\OAD\TP2\tp2-oad\main.cpp(10,12): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
-  tp2-oad.vcxproj -> C:\Users\jaelv\Documents\GitHub\OAD\TP2\x64\Debug\tp2-oad.exe
+  tp2-oad.vcxproj -> C:\Users\J-PC\Documents\GitHub\OAD\TP2\x64\Debug\tp2-oad.exe

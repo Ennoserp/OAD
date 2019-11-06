@@ -19,26 +19,29 @@ typedef struct T_instance {
 
 	int nb_piece; //nb pieces
 	int nb_machine; //nb machines
-	int NT; // = nb_machine * nb_piece; //nb opérations
+	int NT;// = nb_machine * nb_piece; //nb opÃ©rations
 
 	int m[n_max][m_max];
 	int p[n_max][m_max];
 
-	int p_prim[max]; //contient les durées que chaque pièce passe sur les machines dans l'ordre où elles rencontrent les machines ex: 10 / 5 / 4 /30
-	int m_prim[max]; //contient les numéros des machines (ordonnées) sur lesquelles passent les pièces
+	int p_prim[max]; //contient les durÃ©es que chaque piÃ¨ce passe sur les machines dans l'ordre oÃ¹ elles rencontrent les machines ex: 10 / 5 / 4 /30
+	int m_prim[max]; //contient les numÃ©ros des machines (ordonnÃ©es) sur lesquelles passent les piÃ¨ces
 
-	int N[n_max] = { 0 }; //N[i]: nb de fois qu'on a rencontré la pièce i dans le vecteur V;
+	int N[n_max] = { 0 }; //N[i]: nb de fois qu'on a rencontrÃ© la piÃ¨ce i dans le vecteur V;
 
 }T_instance;
 
 
 typedef struct T_solution {
 
-	int V[10] = { 0, 1, 2, 2, 3, 3, 1, 2, 3, 1 }; //vecteur de Bierwirth
+	int V[max]; //vecteur de Bierwith
 	int st[max] = { 0 }; //tableau des starting time
-	int pred[max] = { -1 }; //tableau des prédécesseurs
-	int chemin_max; //taille du plus long chemin
-
+	int pred[max] = { -1 }; //tableau des prÃ©dÃ©cesseurs
+	int T[m_max][n_max];
+	int n[m_max];
+	int MP[m_max];
+	int total;
+	int dernier_sommet;
 }T_solution;
 
 
@@ -53,10 +56,13 @@ void afficher_instance(T_instance&);
 void creer_prime(T_instance&);
 
 void evaluer(T_solution&, T_instance&);
-void recherche_locale(T_solution&, T_instance&, int);
+void recherche_locale(T_solution&, T_instance&);
 void generer_vecteur_alea(T_solution&, T_instance&);
 void afficher_vecteur(T_solution&, T_instance&);
 void copie(int Tableau_Original[], int Tableau_Copie[]);
+void init_solution(T_instance& instance, T_solution& solution);
+void position(T_instance& instance, T_solution& sol, int i, int j, int& Posi, int& Posj);
+
 
 
 #endif

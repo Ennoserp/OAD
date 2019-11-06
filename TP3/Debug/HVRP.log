@@ -1,0 +1,3 @@
+﻿  hvrp.cpp
+C:\Users\clmesnil\Documents\GitHub\OAD\TP3\hvrp.cpp(8,6): warning C4101: 'a' : variable locale non référencée
+  HVRP.vcxproj -> C:\Users\clmesnil\Documents\GitHub\OAD\TP3\Debug\HVRP.exe

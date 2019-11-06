@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <time.h>
 #include "Jobshop.hpp"
@@ -78,8 +78,10 @@ void evaluer(T_solution& sol, T_instance& instance) {
 	//algo
 	for (int i = 1; i <= instance.NT; i++) {
 		ind_j = sol.V[i];
+
 		instance.N[ind_j] = instance.N[ind_j] + 1;
 		pos = T[ind_j-1][instance.N[ind_j]-1];
+
 		if (instance.N[ind_j] > 1) { //alors on est deja passe par la
 			prec = pos - 1;
 			if (sol.st[prec] + instance.p_prim[prec] > sol.st[pos]) {
@@ -87,7 +89,9 @@ void evaluer(T_solution& sol, T_instance& instance) {
 				sol.pred[pos] = prec;
 			}
 		}
-		machine = instance.m_prim[pos-1];
+
+		machine = instance.m_prim[pos-1]; // kekun a [pos] et pas [pos -1]
+
 
 		if (MP[machine] != 0) {
 			prec = MP[machine];
@@ -99,45 +103,55 @@ void evaluer(T_solution& sol, T_instance& instance) {
 		MP[machine] = pos;
 	}
 
+  for (int i = 1; i <= instance.nb_piece; i++)
+  {
+    prec = i * instance.nb_machine - 1;
+    if (sol.st[prec] + instance.p_prim[prec] > sol.total)
+    {
+      sol.dernier_sommet = prec;
+      sol.total = sol.st[prec] + instance.p_prim[prec];
+    }
+  }
+
 }
 
 
-void recherche_locale(T_solution& sol, T_instance& instance, int nb_iteration) {
-	int itmax = 99;// nb d'iterations maximal
+void recherche_locale(T_solution& sol, T_instance& instance) {
+  int nb_iteration = 0;
+	int itmax = 200;// nb d'iterations maximal
 	int temp;
-	int i = instance.NT;
+	int i = sol.dernier_sommet;
 	int j = sol.pred[i];
 	int position_i = sol.V[i];
 	int position_j = sol.V[j];
-	int V_prim[11];
-	/*
-	while((j != 0 ) && (nb_iteration < itmax))
+	
+	while((j != -1 ) && (nb_iteration < itmax)) // != -1
 	{
 		nb_iteration++;
 		if(instance.m_prim[i] == instance.m_prim[j])
 		{
 			//Calculer la position de i et de j pour faire la permutation
+      position(instance, sol, i, j, position_i, position_j);
 
-			
-			
-			copie(sol.V,V_prim);
+      T_solution solution_nouv;
+      init_solution(instance, solution_nouv);
 
-			temp = V_prim[position_i];
-			sol.V[position_i] = V_prim[position_j];		// V_prim[position_i] <-> V_prim[position_i];
-			V_prim[position_j] = temp;
+      copie(sol.V,solution_nouv.V);
+			solution_nouv.V[position_i] = sol.V[position_j];
+			solution_nouv.V[position_j] = sol.V[position_i];
 
 			evaluer(sol, instance);
-			if( i = -1)
+
+			if (solution_nouv.total < sol.total)
 			{
-				copie(V_prim, sol.V);
-				i = instance.NT;
+				sol = solution_nouv;
+				i = sol.dernier_sommet;
 				j = sol.pred[i];
 			}
 			else
 			{
 				i = j;
-				j = sol.pred[j];
-
+				j = sol.pred[i];
 			}
 		}
 		else
@@ -145,9 +159,7 @@ void recherche_locale(T_solution& sol, T_instance& instance, int nb_iteration) {
 			i = j;
 			j = sol.pred[j];
 		}
-	}*/
-
-
+	}
 }
 
 
@@ -195,5 +207,63 @@ void copie(int Tableau_Original[], int Tableau_Copie[])
 	for (int a = 0; a < 11 ; a++) // V' = V
 	{
 		Tableau_Copie[a] = Tableau_Original[a];
+	}
+}
+
+
+
+void init_solution(T_instance& instance, T_solution& solution)
+{
+	int i, j;
+
+	generer_vecteur_alea(solution, instance);
+
+	for (i = 0; i < instance.nb_piece; i++)
+	{
+		solution.n[i] = 0;
+	}
+
+	for (i = 0; i < instance.nb_machine; i++)
+	{
+		solution.MP[i] = -1;
+	}
+
+	for (i = 0; i < instance.nb_piece; i++)
+	{
+		for (j = 0; j < instance.nb_machine; j++)
+		{
+			solution.T[i][j] = i * instance.nb_machine + j;
+			solution.st[i * instance.nb_machine + j] = 0;
+			solution.pred[i * instance.nb_machine + j] = -1;
+		}
+	}
+	solution.total = 0;
+}
+
+void position(T_instance& instance, T_solution& sol, int i, int j, int& Posi, int& Posj)
+{
+	int Pi = i / instance.nb_machine;
+	int Pj = j / instance.nb_machine;
+
+	int occ_i = 0;
+	int occ_j = 0;
+
+	int Mai = i % instance.nb_machine;
+	int Maj = j % instance.nb_machine;
+
+	Posi = 0;
+	while (occ_i != Mai || sol.V[Posi] != Pi)
+	{
+		if (sol.V[Posi] == Pi)
+			occ_i++;
+		Posi++;
+	}
+
+	Posj = 0;
+	while (occ_j != Maj || sol.V[Posj] != Pj)
+	{
+		if (sol.V[Posj] == Pj)
+			occ_j++;
+		Posj++;
 	}
 }

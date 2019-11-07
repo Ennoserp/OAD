@@ -27,14 +27,14 @@ int main() {
 	  for(int i = 0; i < size_tab ; i++)
 	  {
 		  start = clock();
-		  srand(time(0));
+		  srand(0);
 		  lire_fichier(tab[i], instance);
 
 		  init_solution(instance, sol);
 
 		  evaluer(sol, instance);
 
-		  //recherche_locale(sol, instance);
+		  recherche_locale(sol, instance);
 
 		  end = clock();
 

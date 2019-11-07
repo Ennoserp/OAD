@@ -1,3 +1,2 @@
 ﻿  main.cpp
-C:\Users\Clément\Documents\GitHub\OAD\TP2\tp2-oad\main.cpp(30,15): warning C4244:  'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
   tp2-oad.vcxproj -> C:\Users\Clément\Documents\GitHub\OAD\TP2\x64\Debug\tp2-oad.exe

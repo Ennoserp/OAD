@@ -34,7 +34,7 @@ int main() {
 
 		  evaluer(sol, instance);
 
-		  recherche_locale(sol, instance);
+		  //recherche_locale(sol, instance);
 
 		  end = clock();
 

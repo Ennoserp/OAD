@@ -220,9 +220,9 @@ void init_solution(T_instance& instance, T_solution& solution)
 
 	generer_vecteur_alea(solution, instance);
 
-	for (int i = 0; i < instance.nb_piece; i++)
+	for (int i = 0; i <= instance.nb_piece; i++)
 	{
-		solution.n[i] = 0;
+		instance.N[i] = 0;
 	}
 
 	for (int i = 0; i < instance.nb_machine; i++)

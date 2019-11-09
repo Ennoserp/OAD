@@ -12,10 +12,11 @@ int main() {
 	/*
 	T_instance instance;
 	T_solution sol;
+	srand(0);
 	lire_fichier("la01.txt", instance);
 	generer_vecteur_alea(sol, instance);
 	*/
-
+	
 	  clock_t start, end;
 	  std::cout << "Fichier     " << "Taille   " << "Temps obtenu   " << "Duree" << std::endl;
 	  T_instance instance;
@@ -27,33 +28,23 @@ int main() {
 	  for(int i = 0; i < size_tab ; i++)
 	  {
 		  start = clock();
-		  srand(0);
+		  time_t srand(time(0));
 		  lire_fichier(tab[i], instance);
-
-		  init_solution(instance, sol);
+		  //afficher_instance(instance);
+		  
+		  init_solution(sol, instance);
 
 		  evaluer(sol, instance);
 
-		  //recherche_locale(sol, instance);
+		  recherche_locale(sol, instance);
+
+		  GRASP(instance, sol);
 
 		  end = clock();
 
 		  std::cout << tab[i] << "    " << instance.nb_piece << "x" << instance.nb_machine << "     " << sol.total << "            " << ((double)end - start) / CLOCKS_PER_SEC << "s" << std::endl;
+		
 	  }
-	
 
-	//afficher_instance(instance); //fonctionnel
-	//creer_prime(instance); //fonctionnel
-
-	//generer_vecteur_alea(sol, instance);
-	//copie(V1, sol.V);
-	//afficher_vecteur(sol, instance);
-	//evaluer(sol, instance);
-/*
-	for (int i = 0; i < 5; i++)
-	{
-		cout << sol.pred[i] << " ";
-	}
-*/
 	return 1;
 }

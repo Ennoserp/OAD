@@ -48,13 +48,17 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 	std::ifstream fichier(nom_fichier);
 	int a;
 	std::string ligne;
+
 	for (int i = 0; i < 5; ++i) {
+
 		std::getline(fichier, ligne);
 	}
 	fichier >> instance.nb_client;
 	fichier >> instance.nbtypecam;
 	std::getline(fichier, ligne);
+
 	for (int i = 0; i < instance.nbtypecam; i++) {
+
 		fichier >> instance.liste_types[i].nb;
 		fichier >> instance.liste_types[i].capacite;
 		fichier >> instance.liste_types[i].cf;

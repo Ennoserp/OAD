@@ -90,10 +90,10 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <HeapReserveSize>123456789</HeapReserveSize>
-      <HeapCommitSize>123456789</HeapCommitSize>
-      <StackReserveSize>123456789</StackReserveSize>
-      <StackCommitSize>123456789</StackCommitSize>
+      <HeapReserveSize>1000000000</HeapReserveSize>
+      <HeapCommitSize>1000000000</HeapCommitSize>
+      <StackReserveSize>1000000000</StackReserveSize>
+      <StackCommitSize>1000000000</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

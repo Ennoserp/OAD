@@ -184,7 +184,7 @@ void recherche_locale(T_solution& sol, T_instance& instance) {
 
 /********************************************************************************************/
 /*																							*/
-/*					Procédure permettant de générer un vecteur de Bierwirth					*/
+/*					Procédure permettant de générer un vecteur de Birwirth					*/
 /*																							*/
 /* Entrée:				-sol						Variable contenant les données de la	*/
 /*													solution obtenue						*/

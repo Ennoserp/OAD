@@ -7,7 +7,7 @@ const int nmaxtournee = 50;				// nombre maximal de tournées réalisées
 const int nmax = 500;					// nombre max de sommets
 const int nmaxtype = 10;				// nombre maximal de types de camions
 const int namx_som_par_tournee = 30;	// pas représentatif
-
+const int it_max = 15;					// nombre max de coups autorisés pour le mouvement 2-opt
 
 typedef struct T_type_camion {
 	int nb;								// nombre de camions
@@ -23,7 +23,7 @@ typedef struct T_instance {
 	double distance[nmax + 1][nmax + 1];// matrices des distances
 	int nbtypecam;						// nombre de types de camions dans cette instance
 	T_type_camion liste_types[nmaxtype];
-	int sauts[100];						// pour plus proches voisins
+	int V_som[6] = { 99999 };
 }T_instance;
 
 
@@ -45,8 +45,11 @@ typedef struct T_solution {
 void lire_instance_type1(std::string nom_fichier, T_instance& instance);
 void lire_instance_type2(std::string nom_fichier, T_instance& instance);
 void operateur_2_opt_inter_tournee();
-void operateur_2_opt();
+void operateur_2_opt(T_instance& instance, T_tournee& tournee, int it_max);
+void initialiser_voisins(T_instance& instance);
 void plus_proches_voisins(T_instance& instance, int depart);
+void tri(T_instance& instance, int i, int depart);
+void rotation(T_tournee tournee, int i, int j);
 
 
 #endif

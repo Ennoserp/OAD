@@ -5,7 +5,7 @@
 
 void lire_instance_type1(std::string nom_fichier, T_instance &instance) {
 	std::ifstream fichier(nom_fichier);
-	int a;
+	
 	std::string ligne;
 	for (int i = 0; i < 5; ++i) {
 		std::getline(fichier, ligne);
@@ -70,7 +70,7 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 	for (int i = 0; i <= instance.nb_client; i++)//on récup les coords
 	{
 		for (int j = 0;j <= instance.nb_client;j++) {
-			fichier >> instance.distance[i][j];			
+			fichier >> instance.distance[i][j];
 		}
 	}
 	std::string ligne2;
@@ -85,24 +85,105 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 	}
 }
 
+void tri(T_instance& instance, int i, int depart) {
+	int j = i, stop = 0, temp;								// j : indice de tri   ;   stop : valeur d'arrêt   ;   temp : valuer temporaire
+	while (j > 0 && stop != 1) {
+
+		if (instance.distance[depart][instance.V_som[j]] < instance.distance[depart][instance.V_som[j-1]]) {
+			temp = instance.V_som[j-1];
+			instance.V_som[j-1] = instance.V_som[j];
+			instance.V_som[j] = temp;
+		}
+		else {
+			stop = 1;
+		}
+		j--;
+	}
+}
+void initialiser_voisins(T_instance& instance) {
+	for (int i = 0; i < 6;i++) {
+		instance.V_som[i] = 99999;
+	}
+}
+
 void plus_proches_voisins(T_instance& instance, int depart)
 {
-	int i = 0, j = 0;
-	int min = 0;
-	int compteur = 0;
-	int V_som[6];
-	for (int i = 0; i <= instance.nb_client ; i++)
+	int i = 0;										// i : indice du tableau des voisins
+	initialiser_voisins(instance);
+	for (int k = 0; k <= instance.nb_client; k++)	// k : numéro du sommet courant
 	{
-		if (i != depart)
-		{
+		if (k != depart) {
 
+			instance.V_som[i] = k;
+			tri(instance, i, depart);
+			if (i < 5) {
+				i++;
+			}
+		}
+	}
+}
+// a faire
+void tour_geant(T_instance& instance, T_tournee& tournee) {
+	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
+	int Px = 1;											// position du sommet dans L (???)
+	int nr = 200;
+	int x, y;
+	int M[nmax] = { 0 };
+	int L[nmax];
+
+	for (int i = 0; i <= instance.nb_client; i++) {
+		L[i] = i;
+	}
+	
+
+	for (int i = 1; i < instance.nb_client + 1;i++) { // dans cours : for i = 2; ..
+		x = tournee.liste_sauts[i - 1];
+		M[x] = 1;
+		L[Px] = L[nr];
+		nr--;
+
+		plus_proches_voisins(instance, x);
+
+		for (int j = 1; j <= nr; j++) { // ptet j=0
+			y = L[j];
 		}
 	}
 }
 
-void operateur_2_opt()
+
+
+
+
+void rotation(T_tournee tournee, int i, int j) {				//marche ptet pas :s
+	int temp;
+	for (int k = 1; k < j - i /2; k++) {
+		temp = tournee.liste_sauts[i + k];
+		tournee.liste_sauts[i + k] = tournee.liste_sauts[j - k];
+		tournee.liste_sauts[j - k] = temp;
+	}
+	temp = tournee.liste_sauts[i];
+	tournee.liste_sauts[i] = tournee.liste_sauts[j];
+	tournee.liste_sauts[j] = temp;
+}
+
+void operateur_2_opt(T_instance& instance,T_tournee& tournee, int it_max)
 {
-	// recopier le cours: easy : 2 boucles for
+	int it = 0, delta1, delta2, beta1, beta2, gamma;
+	while (it < it_max) {
+		for (int i = 1; i <= instance.nb_client - 2;i++) {
+			delta1 = instance.distance[instance.V_som[i]][instance.V_som[i + 1]];		// D_b,a
+			for (int j = i + 2; j <= instance.nb_client;j++) {
+				delta2 = instance.distance[instance.V_som[j]][instance.V_som[j + 1]];
+				beta1 = instance.distance[instance.V_som[i]][instance.V_som[j]];
+				beta2 = instance.distance[instance.V_som[i + 1]][instance.V_som[j + 1]];
+				gamma = beta1 + beta2 - delta1 - delta2;
+				if (gamma < 0) {
+					tournee.cout = tournee.cout + gamma;
+					rotation(tournee, i, j);
+				}
+			}
+		}
+	}
 }
 
 void operateur_2_opt_inter_tournee()

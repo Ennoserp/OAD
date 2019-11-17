@@ -44,6 +44,7 @@ void lire_instance_type1(std::string nom_fichier, T_instance &instance) {
 	}
 }
 
+
 void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 	std::ifstream fichier(nom_fichier);
 	int a;
@@ -85,6 +86,7 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 	}
 }
 
+
 void tri(T_instance& instance, int i, int depart) {
 	int j = i, stop = 0, temp;								// j : indice de tri   ;   stop : valeur d'arrêt   ;   temp : valuer temporaire
 	while (j > 0 && stop != 1) {
@@ -100,11 +102,14 @@ void tri(T_instance& instance, int i, int depart) {
 		j--;
 	}
 }
+
+
 void initialiser_voisins(T_instance& instance) {
 	for (int i = 0; i < 6;i++) {
 		instance.V_som[i] = 99999;
 	}
 }
+
 
 void plus_proches_voisins(T_instance& instance, int depart)
 {
@@ -122,6 +127,7 @@ void plus_proches_voisins(T_instance& instance, int depart)
 		}
 	}
 }
+
 // a faire
 void tour_geant(T_instance& instance, T_tournee& tournee) {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
@@ -134,7 +140,6 @@ void tour_geant(T_instance& instance, T_tournee& tournee) {
 	for (int i = 0; i <= instance.nb_client; i++) {
 		L[i] = i;
 	}
-	
 
 	for (int i = 1; i < instance.nb_client + 1;i++) { // dans cours : for i = 2; ..
 		x = tournee.liste_sauts[i - 1];
@@ -151,10 +156,7 @@ void tour_geant(T_instance& instance, T_tournee& tournee) {
 }
 
 
-
-
-
-void rotation(T_tournee tournee, int i, int j) {				//marche ptet pas :s
+void rotation(T_tournee tournee, int i, int j) {				//marche ptet pas :s, à tester
 	int temp;
 	for (int k = 1; k < j - i /2; k++) {
 		temp = tournee.liste_sauts[i + k];
@@ -166,7 +168,8 @@ void rotation(T_tournee tournee, int i, int j) {				//marche ptet pas :s
 	tournee.liste_sauts[j] = temp;
 }
 
-void operateur_2_opt(T_instance& instance,T_tournee& tournee, int it_max)
+
+void operateur_2_opt(T_instance& instance,T_tournee& tournee, int it_max)//on parle jamais du volume max
 {
 	int it = 0, delta1, delta2, beta1, beta2, gamma;
 	while (it < it_max) {
@@ -185,6 +188,7 @@ void operateur_2_opt(T_instance& instance,T_tournee& tournee, int it_max)
 		}
 	}
 }
+
 
 void operateur_2_opt_inter_tournee()
 {

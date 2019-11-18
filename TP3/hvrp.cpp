@@ -126,12 +126,10 @@ void trouver_proches_voisins(T_instance& instance, int liste_sommets_marques[], 
 }
 
 
-
-
 void tour_geant_ppv(T_instance& instance, T_tournee& tournee) {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
 	int Px = 1;											// position du sommet dans L (???)
-	int nr = 200;
+	int nr = instance.nb_client;
 	int x, y;
 	int M[nmax] = { 0 };
 	int L[nmax];
@@ -140,7 +138,7 @@ void tour_geant_ppv(T_instance& instance, T_tournee& tournee) {
 		L[i] = i;
 	}
 
-	for (int i = 1; i < instance.nb_client + 1; i++) { // dans cours : for i = 2; ..
+	for (int i = 1; i < instance.nb_client + 1; i++) { 
 		x = tournee.liste_sauts[i - 1];
 		M[x] = 1;
 		L[Px] = L[nr];
@@ -167,7 +165,7 @@ void tour_geant_ppvrand(T_instance& instance, T_tournee& tournee) {
 		L[i] = i;
 	}
 
-	for (int i = 1; i < instance.nb_client + 1; i++) { // dans cours : for i = 2; ..
+	for (int i = 1; i < instance.nb_client + 1; i++) { 
 		x = tournee.liste_sauts[i - 1];
 		M[x] = 1;
 		L[Px] = L[nr];
@@ -175,6 +173,33 @@ void tour_geant_ppvrand(T_instance& instance, T_tournee& tournee) {
 
 		trouver_proches_voisins(instance, M, x);
 		tournee.liste_sauts[i] = instance.V_som[choix_voisin_aleatoire(nr)];
+		tournee.nb_sauts++;
+	}
+	tournee.nb_sauts++;
+	tournee.liste_sauts[tournee.nb_sauts] = 0;
+}
+
+
+void tour_geant_3emeheuristique(T_instance& instance, T_tournee& tournee) {
+	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
+	int Px = 1;											// position du sommet dans L (???)
+	int nr = instance.nb_client;
+	int x = 0, y = 0;
+	int M[nmax] = { 0 };
+	int L[nmax];
+
+	for (int i = 0; i <= instance.nb_client; i++) {
+		L[i] = i;
+	}
+
+	for (int i = 1; i < instance.nb_client + 1; i++) { 
+		x = tournee.liste_sauts[i - 1];
+		M[x] = 1;
+		L[Px] = L[nr];
+		nr--;
+
+		trouver_proches_voisins(instance, M, x);
+		tournee.liste_sauts[i] = instance.V_som[1];//trouver une autre manière de construire un tour géant
 		tournee.nb_sauts++;
 	}
 	tournee.nb_sauts++;

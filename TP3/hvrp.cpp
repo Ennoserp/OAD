@@ -1,4 +1,4 @@
-#include "hvrp.hpp"
+ #include "hvrp.hpp"
 #include <fstream>
 #include <sstream>
 
@@ -111,13 +111,13 @@ void initialiser_voisins(T_instance& instance) {
 }
 
 
-void plus_proches_voisins(T_instance& instance, int depart)
+void trouver_proches_voisins(T_instance& instance, int liste_sommets_marques[], int depart)
 {
 	int i = 0;										// i : indice du tableau des voisins
 	initialiser_voisins(instance);
 	for (int k = 0; k <= instance.nb_client; k++)	// k : numéro du sommet courant
 	{
-		if (k != depart) {
+		if (k != depart && liste_sommets_marques[k]==0) {
 
 			instance.V_som[i] = k;
 			tri(instance, i, depart);
@@ -129,7 +129,7 @@ void plus_proches_voisins(T_instance& instance, int depart)
 }
 
 // a faire
-void tour_geant(T_instance& instance, T_tournee& tournee) {
+void tour_geant_ppv(T_instance& instance, T_tournee& tournee) {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
 	int Px = 1;											// position du sommet dans L (???)
 	int nr = 200;
@@ -147,12 +147,14 @@ void tour_geant(T_instance& instance, T_tournee& tournee) {
 		L[Px] = L[nr];
 		nr--;
 
-		plus_proches_voisins(instance, x);
-
-		for (int j = 1; j <= nr; j++) { // ptet j=0
-			y = L[j];
-		}
+		trouver_proches_voisins(instance,M , x);
+		tournee.liste_sauts[i] = instance.V_som[0];
 	}
+}
+
+
+void tour_geant_ppvrand(T_instance& instance, T_tournee tournee) {
+	int a = 2;//a faire
 }
 
 

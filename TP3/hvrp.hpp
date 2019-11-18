@@ -50,10 +50,11 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance);
 void operateur_2_opt_inter_tournee();
 void operateur_2_opt(T_instance& instance, T_tournee& tournee, int it_max);
 void initialiser_voisins(T_instance& instance);
-void plus_proches_voisins(T_instance& instance, int depart);
+void trouver_proches_voisins(T_instance& instance, int depart);
 void tri(T_instance& instance, int i, int depart);
 void rotation(T_tournee tournee, int i, int j);
-void tour_geant(T_instance& instance, T_tournee& tournee);
+void tour_geant_ppv(T_instance& instance, T_tournee& tournee);
+void tour_geant_ppvrand(T_instance& instance, T_tournee tournee);
 
 
 #endif

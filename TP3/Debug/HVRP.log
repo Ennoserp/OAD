@@ -1,1 +1,9 @@
-﻿  HVRP.vcxproj -> C:\Users\J-PC\Documents\GitHub\OAD\TP3\Debug\HVRP.exe
+﻿  hvrp.cpp
+C:\Users\javavasseu\Documents\GitHub\OAD\TP3\hvrp.cpp(136,9): warning C4101:  'y' : variable locale non référencée
+C:\Users\javavasseu\Documents\GitHub\OAD\TP3\hvrp.cpp(179,71): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\javavasseu\Documents\GitHub\OAD\TP3\hvrp.cpp(181,72): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\javavasseu\Documents\GitHub\OAD\TP3\hvrp.cpp(182,67): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+  main.cpp
+  Génération de code en cours...
+C:\Users\javavasseu\Documents\GitHub\OAD\TP3\hvrp.cpp(183,75): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+  HVRP.vcxproj -> C:\Users\javavasseu\Documents\GitHub\OAD\TP3\Debug\HVRP.exe

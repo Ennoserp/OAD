@@ -1,7 +1,4 @@
  #include "hvrp.hpp"
-#include <fstream>
-#include <sstream>
-
 
 void lire_instance_type1(std::string nom_fichier, T_instance &instance) {
 	std::ifstream fichier(nom_fichier);
@@ -128,7 +125,9 @@ void trouver_proches_voisins(T_instance& instance, int liste_sommets_marques[], 
 	}
 }
 
-// a faire
+
+
+
 void tour_geant_ppv(T_instance& instance, T_tournee& tournee) {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
 	int Px = 1;											// position du sommet dans L (???)
@@ -141,20 +140,78 @@ void tour_geant_ppv(T_instance& instance, T_tournee& tournee) {
 		L[i] = i;
 	}
 
-	for (int i = 1; i < instance.nb_client + 1;i++) { // dans cours : for i = 2; ..
+	for (int i = 1; i < instance.nb_client + 1; i++) { // dans cours : for i = 2; ..
 		x = tournee.liste_sauts[i - 1];
 		M[x] = 1;
 		L[Px] = L[nr];
 		nr--;
 
-		trouver_proches_voisins(instance,M , x);
+		trouver_proches_voisins(instance, M, x);
 		tournee.liste_sauts[i] = instance.V_som[0];
+		tournee.nb_sauts++;
 	}
+	tournee.nb_sauts++;
+	tournee.liste_sauts[tournee.nb_sauts] = 0;
 }
 
 
-void tour_geant_ppvrand(T_instance& instance, T_tournee tournee) {
-	int a = 2;//a faire
+void tour_geant_ppvrand(T_instance& instance, T_tournee& tournee) {
+	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
+	int Px = 1;											// position du sommet dans L (???)
+	int nr = instance.nb_client;
+	int x = 0, y = 0;
+	int M[nmax] = { 0 };
+	int L[nmax];
+
+	for (int i = 0; i <= instance.nb_client; i++) {
+		L[i] = i;
+	}
+
+	for (int i = 1; i < instance.nb_client + 1; i++) { // dans cours : for i = 2; ..
+		x = tournee.liste_sauts[i - 1];
+		M[x] = 1;
+		L[Px] = L[nr];
+		nr--;
+
+		trouver_proches_voisins(instance, M, x);
+		tournee.liste_sauts[i] = instance.V_som[choix_voisin_aleatoire(nr)];
+		tournee.nb_sauts++;
+	}
+	tournee.nb_sauts++;
+	tournee.liste_sauts[tournee.nb_sauts] = 0;
+}
+
+
+int choix_voisin_aleatoire(int nb_sommets_restants) {
+	int stop = 0, l = 1;
+	int a;
+	int retour = 0;
+	int i = 0;
+	while (stop != 1) {
+		a = rand() % 100;
+		if (a < 80) {
+			stop = 1;
+		}
+		else {
+			i++;
+			if (i == 4 || i == nb_sommets_restants) {
+				retour = nb_sommets_restants;
+				stop = 1;
+			}
+		}
+	}
+	return retour;
+}
+
+
+void afficher_tournee(T_tournee tournee) {
+	std::cout << "------ TOURNEE ------" << std::endl;
+	std::cout << "Nombre de sauts : " << tournee.nb_sauts << std::endl;
+	std::cout << "Cout de la tournee : " << tournee.cout << std::endl;
+	std::cout << "Volume de la tournee : " << tournee.volume << std::endl;
+	for (int i = 0; i <= tournee.nb_sauts; i++)	{
+		std::cout << tournee.liste_sauts[i] << " ";
+	}
 }
 
 

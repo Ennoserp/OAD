@@ -177,29 +177,14 @@ void tour_geant_ppvrand(T_instance& instance, T_tournee& tournee) {
 	}
 	tournee.nb_sauts++;
 	tournee.liste_sauts[tournee.nb_sauts] = 0;
+	
 }
 
 
-void tour_geant_3emeheuristique(T_instance& instance, T_tournee& tournee) {
+void tour_geant_ordre_num(T_instance& instance, T_tournee& tournee) {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
-	int Px = 1;											// position du sommet dans L (???)
-	int nr = instance.nb_client;
-	int x = 0, y = 0;
-	int M[nmax] = { 0 };
-	int L[nmax];
-
-	for (int i = 0; i <= instance.nb_client; i++) {
-		L[i] = i;
-	}
-
 	for (int i = 1; i < instance.nb_client + 1; i++) { 
-		x = tournee.liste_sauts[i - 1];
-		M[x] = 1;
-		L[Px] = L[nr];
-		nr--;
-
-		trouver_proches_voisins(instance, M, x);
-		tournee.liste_sauts[i] = instance.V_som[1];//trouver une autre manière de construire un tour géant
+		tournee.liste_sauts[i] = i;
 		tournee.nb_sauts++;
 	}
 	tournee.nb_sauts++;
@@ -278,4 +263,58 @@ void operateur_2_opt_inter_tournee()
 {
 	// attention! est-ce que la ocnfiguration est faisable ? sachant que les véhicules ne sont plus les mêmes
 	// les capa ont changé et les couts fixe/variables ont changé !
+}
+
+
+void deplacement_sommet(T_tournee tournee) {
+	int nb_restant = tournee.nb_sauts - 2;
+	T_tournee tournee_a_tester;
+	for (int i = 1; i <= tournee.nb_sauts; i++)
+	{
+		for (int j = 1; j <= nb_restant; j++)
+		{
+			init_tournee(tournee_a_tester);
+			//copier tournee et deplacer le sommet i à l'emplacement j
+			evaluer_tournee(tournee_a_tester);
+			if (tournee_a_tester.cout < tournee.cout) {
+				//Copier tournee_a_tester dans tournee (on garde la tournée testée)
+				copier_tournee(tournee_a_tester, tournee);
+			}
+			
+		}
+	}
+}
+
+
+void init_tournee(T_tournee tournee) {
+	tournee.type_camion = 0;
+	tournee.cout = 0;
+	tournee.volume = 0;
+	tournee.nb_sauts = 0;
+	for (int i = 0; i < 100; i++)
+	{
+		tournee.liste_sauts[i] = 0;
+	}	
+}
+
+
+void copier_tournee(T_tournee tournee_A, T_tournee tournee_B) //remplace la tournee B par la tournee A
+{
+	tournee_B.type_camion = tournee_A.type_camion;
+	tournee_B.cout = tournee_A.cout;
+	tournee_B.volume = tournee_A.volume;
+	tournee_B.nb_sauts = tournee_A.nb_sauts;
+	for (int i = 0; i < tournee_A.nb_sauts; i++)
+	{
+		tournee_B.liste_sauts[i] = tournee_A.liste_sauts[i];
+	}
+}
+
+
+void evaluer_tournee(T_tournee tournee) //pour calculer la distance d'une tournee
+{
+
+}
+
+void SPLIT() {
 }

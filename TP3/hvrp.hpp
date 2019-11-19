@@ -58,6 +58,7 @@ void tri(T_instance& instance, int i, int depart);
 void rotation(T_tournee tournee, int i, int j);
 void tour_geant_ppv(T_instance& instance, T_tournee& tournee);
 void tour_geant_ppvrand(T_instance& instance, T_tournee& tournee);
+void tour_geant_ordre_num(T_instance& instance, T_tournee& tournee);
 void afficher_tournee(T_tournee tournee);
 int choix_voisin_aleatoire(int nb_sommets_restants);
 

@@ -215,7 +215,7 @@ int choix_voisin_aleatoire(int nb_sommets_restants) {
 
 
 void afficher_tournee(T_tournee tournee) {
-	std::cout << "------ TOURNEE ------" << std::endl;
+	std::cout << std::endl << "------ TOURNEE ------" << std::endl;
 	std::cout << "Nombre de sauts : " << tournee.nb_sauts << std::endl;
 	std::cout << "Cout de la tournee : " << tournee.cout << std::endl;
 	std::cout << "Volume de la tournee : " << tournee.volume << std::endl;
@@ -259,6 +259,7 @@ void operateur_2_opt(T_instance& instance,T_tournee& tournee, int it_max)//on pa
 				}
 			}
 		}
+		it++;
 	}
 }
 

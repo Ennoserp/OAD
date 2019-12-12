@@ -35,9 +35,24 @@ typedef struct T_tournee {
 	int   nb_sauts = 0;						// nombre de villes visitées pendant la tournée
 	int   liste_sauts[100];	    			// matrice des sauts /!\ à modifier
 
-	float cout = 0.;						// cout de la tournée en euros
+	double cout = 0.;						// cout de la tournée en euros
 	int	  volume = 0;						// volume déplacé par la tournée
 }T_tournee;
+
+
+typedef struct T_label {
+	int capacite;
+	double prix;
+	int typecamion;
+	int pere;
+}T_label;
+
+
+typedef struct T_tour_geant {
+	int nb_sauts = 0;
+	int liste_sauts[100];
+	T_label liste_labels[100][10]; // on met 10 labels max et la liste des labels comprends en position 0 le nb de labels
+}T_tour_geant;
 
 
 typedef struct T_solution {
@@ -57,9 +72,14 @@ void trouver_proches_voisins(T_instance& instance,int sommets_restants[], int de
 void tri(T_instance& instance, int i, int depart);
 void rotation(T_tournee tournee, int i, int j);
 void tour_geant_ppv(T_instance& instance, T_tournee& tournee);
-void tour_geant_ppvrand(T_instance& instance, T_tournee& tournee);
+void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee);
 void tour_geant_ordre_num(T_instance& instance, T_tournee& tournee);
 void afficher_tournee(T_tournee tournee);
 int choix_voisin_aleatoire(int nb_sommets_restants);
+void init_tournee(T_tournee tournee);
+void copier_tournee(T_tournee tournee_A, T_tournee tournee_B);
+void evaluer_tournee(T_tournee tournee);
+void SPLIT(T_tournee tour_geant, T_solution sol, T_instance instance);
+
 
 #endif

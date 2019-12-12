@@ -130,7 +130,7 @@ void tour_geant_ppv(T_instance& instance, T_tournee& tournee) {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
 	int Px = 1;											// position du sommet dans L (???)
 	int nr = instance.nb_client;
-	int x, y;
+	int x;
 	int M[nmax] = { 0 };
 	int L[nmax];
 
@@ -153,11 +153,11 @@ void tour_geant_ppv(T_instance& instance, T_tournee& tournee) {
 }
 
 
-void tour_geant_ppvrand(T_instance& instance, T_tournee& tournee) {
+void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee) {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
 	int Px = 1;											// position du sommet dans L (???)
 	int nr = instance.nb_client;
-	int x = 0, y = 0;
+	int x = 0;
 	int M[nmax] = { 0 };
 	int L[nmax];
 
@@ -240,7 +240,8 @@ void rotation(T_tournee tournee, int i, int j) {				//marche ptet pas :s, à test
 
 void operateur_2_opt(T_instance& instance,T_tournee& tournee, int it_max)//on parle jamais du volume max
 {
-	int it = 0, delta1, delta2, beta1, beta2, gamma;
+	int it = 0;
+	double delta1, delta2, beta1, beta2, gamma;
 	while (it < it_max) {
 		for (int i = 1; i <= instance.nb_client - 2;i++) {
 			delta1 = instance.distance[instance.V_som[i]][instance.V_som[i + 1]];		// D_b,a
@@ -316,5 +317,6 @@ void evaluer_tournee(T_tournee tournee) //pour calculer la distance d'une tourne
 
 }
 
-void SPLIT() {
+void SPLIT(T_tour_geant tour_geant, T_solution sol, T_instance instance) {
+
 }

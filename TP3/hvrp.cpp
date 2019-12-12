@@ -26,7 +26,7 @@ void lire_instance_type1(std::string nom_fichier, T_instance &instance) {
 	fichier >> x[0];
 	fichier >> y[0];
 
-	for (int i = 1; i < instance.nb_client + 1; i++)//on récup les coords
+	for (int i = 1; i < instance.nb_client + 1; i++)//on rï¿½cup les coords
 	{
 		fichier >> x[i];
 		fichier >> y[i];
@@ -65,7 +65,7 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 	std::getline(fichier, ligne);
 	std::getline(fichier, ligne);
 
-	for (int i = 0; i <= instance.nb_client; i++)//on récup les coords
+	for (int i = 0; i <= instance.nb_client; i++)//on rï¿½cup les coords
 	{
 		for (int j = 0;j <= instance.nb_client;j++) {
 			fichier >> instance.distance[i][j];
@@ -85,7 +85,7 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 
 
 void tri(T_instance& instance, int i, int depart) {
-	int j = i, stop = 0, temp;								// j : indice de tri   ;   stop : valeur d'arrêt   ;   temp : valuer temporaire
+	int j = i, stop = 0, temp;								// j : indice de tri   ;   stop : valeur d'arrï¿½t   ;   temp : valuer temporaire
 	while (j > 0 && stop != 1) {
 
 		if (instance.distance[depart][instance.V_som[j]] < instance.distance[depart][instance.V_som[j-1]]) {
@@ -112,7 +112,7 @@ void trouver_proches_voisins(T_instance& instance, int liste_sommets_marques[], 
 {
 	int i = 0;										// i : indice du tableau des voisins
 	initialiser_voisins(instance);
-	for (int k = 0; k <= instance.nb_client; k++)	// k : numéro du sommet courant
+	for (int k = 0; k <= instance.nb_client; k++)	// k : numï¿½ro du sommet courant
 	{
 		if (k != depart && liste_sommets_marques[k]==0) {
 
@@ -127,7 +127,7 @@ void trouver_proches_voisins(T_instance& instance, int liste_sommets_marques[], 
 
 
 void tour_geant_ppv(T_instance& instance, T_tournee& tournee) {
-	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
+	tournee.liste_sauts[0] = 0;							// on part de l'entrepï¿½t
 	int Px = 1;											// position du sommet dans L (???)
 	int nr = instance.nb_client;
 	int x;
@@ -154,7 +154,7 @@ void tour_geant_ppv(T_instance& instance, T_tournee& tournee) {
 
 
 void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee) {
-	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
+	tournee.liste_sauts[0] = 0;							// on part de l'entrepï¿½t
 	int Px = 1;											// position du sommet dans L (???)
 	int nr = instance.nb_client;
 	int x = 0;
@@ -182,7 +182,7 @@ void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee) {
 
 
 void tour_geant_ordre_num(T_instance& instance, T_tournee& tournee) {
-	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
+	tournee.liste_sauts[0] = 0;							// on part de l'entrepï¿½t
 	for (int i = 1; i < instance.nb_client + 1; i++) { 
 		tournee.liste_sauts[i] = i;
 		tournee.nb_sauts++;
@@ -215,7 +215,7 @@ int choix_voisin_aleatoire(int nb_sommets_restants) {
 
 
 void afficher_tournee(T_tournee tournee) {
-	std::cout << "------ TOURNEE ------" << std::endl;
+	std::cout << std::endl << "------ TOURNEE ------" << std::endl;
 	std::cout << "Nombre de sauts : " << tournee.nb_sauts << std::endl;
 	std::cout << "Cout de la tournee : " << tournee.cout << std::endl;
 	std::cout << "Volume de la tournee : " << tournee.volume << std::endl;
@@ -225,16 +225,17 @@ void afficher_tournee(T_tournee tournee) {
 }
 
 
-void rotation(T_tournee tournee, int i, int j) {				//marche ptet pas :s, à tester
-	int temp;
-	for (int k = 1; k < j - i /2; k++) {
-		temp = tournee.liste_sauts[i + k];
-		tournee.liste_sauts[i + k] = tournee.liste_sauts[j - k];
+void rotation(T_tournee& tournee, int i, int j) {				//a l'air OK tier !
+	int temp=0;
+	temp = tournee.liste_sauts[i + 1];
+	tournee.liste_sauts[i + 1] = tournee.liste_sauts[j];
+	tournee.liste_sauts[j] = temp;
+	for (int k = 1; k <= (j - i - 1)/2; k++) {
+		temp = tournee.liste_sauts[i + k + 1];
+		tournee.liste_sauts[i + k + 1] = tournee.liste_sauts[j - k];
 		tournee.liste_sauts[j - k] = temp;
 	}
-	temp = tournee.liste_sauts[i];
-	tournee.liste_sauts[i] = tournee.liste_sauts[j];
-	tournee.liste_sauts[j] = temp;
+	
 }
 
 
@@ -243,27 +244,31 @@ void operateur_2_opt(T_instance& instance,T_tournee& tournee, int it_max)//on pa
 	int it = 0;
 	double delta1, delta2, beta1, beta2, gamma;
 	while (it < it_max) {
+
 		for (int i = 1; i <= instance.nb_client - 2;i++) {
-			delta1 = instance.distance[instance.V_som[i]][instance.V_som[i + 1]];		// D_b,a
+			delta1 = instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[i + 1]];		// D_b,a
+
 			for (int j = i + 2; j <= instance.nb_client;j++) {
-				delta2 = instance.distance[instance.V_som[j]][instance.V_som[j + 1]];
-				beta1 = instance.distance[instance.V_som[i]][instance.V_som[j]];
-				beta2 = instance.distance[instance.V_som[i + 1]][instance.V_som[j + 1]];
+				delta2 = instance.distance[tournee.liste_sauts[j]][tournee.liste_sauts[j + 1]];
+				beta1 = instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[j]];
+				beta2 = instance.distance[tournee.liste_sauts[i + 1]][tournee.liste_sauts[j + 1]];
 				gamma = beta1 + beta2 - delta1 - delta2;
+
 				if (gamma < 0) {
 					tournee.cout = tournee.cout + gamma;
 					rotation(tournee, i, j);
 				}
 			}
 		}
+		it++;
 	}
 }
 
 
 void operateur_2_opt_inter_tournee()
 {
-	// attention! est-ce que la ocnfiguration est faisable ? sachant que les véhicules ne sont plus les mêmes
-	// les capa ont changé et les couts fixe/variables ont changé !
+	// attention! est-ce que la ocnfiguration est faisable ? sachant que les vï¿½hicules ne sont plus les mï¿½mes
+	// les capa ont changï¿½ et les couts fixe/variables ont changï¿½ !
 }
 
 
@@ -275,10 +280,10 @@ void deplacement_sommet(T_tournee tournee) {
 		for (int j = 1; j <= nb_restant; j++)
 		{
 			init_tournee(tournee_a_tester);
-			//copier tournee et deplacer le sommet i à l'emplacement j
+			//copier tournee et deplacer le sommet i ï¿½ l'emplacement j
 			evaluer_tournee(tournee_a_tester);
 			if (tournee_a_tester.cout < tournee.cout) {
-				//Copier tournee_a_tester dans tournee (on garde la tournée testée)
+				//Copier tournee_a_tester dans tournee (on garde la tournï¿½e testï¿½e)
 				copier_tournee(tournee_a_tester, tournee);
 			}
 			

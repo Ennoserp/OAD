@@ -153,7 +153,7 @@ void tour_geant_ppv(T_instance& instance, T_tournee& tournee) {
 }
 
 
-void tour_geant_ppvrand(T_instance& instance, T_tournee& tournee) {
+void tour_geant_ppvrand(T_instance& instance, T_tournee& tournee) { //// on ne calcule pas le coût de la tournée
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
 	int Px = 1;											// position du sommet dans L (???)
 	int nr = instance.nb_client;
@@ -225,16 +225,17 @@ void afficher_tournee(T_tournee tournee) {
 }
 
 
-void rotation(T_tournee tournee, int i, int j) {				//marche ptet pas :s, à tester
-	int temp;
-	for (int k = 1; k < j - i /2; k++) {
-		temp = tournee.liste_sauts[i + k];
-		tournee.liste_sauts[i + k] = tournee.liste_sauts[j - k];
+void rotation(T_tournee& tournee, int i, int j) {				//a l'air OK tier !
+	int temp=0;
+	temp = tournee.liste_sauts[i + 1];
+	tournee.liste_sauts[i + 1] = tournee.liste_sauts[j];
+	tournee.liste_sauts[j] = temp;
+	for (int k = 1; k <= (j - i - 1)/2; k++) {
+		temp = tournee.liste_sauts[i + k + 1];
+		tournee.liste_sauts[i + k + 1] = tournee.liste_sauts[j - k];
 		tournee.liste_sauts[j - k] = temp;
 	}
-	temp = tournee.liste_sauts[i];
-	tournee.liste_sauts[i] = tournee.liste_sauts[j];
-	tournee.liste_sauts[j] = temp;
+	
 }
 
 
@@ -242,13 +243,16 @@ void operateur_2_opt(T_instance& instance,T_tournee& tournee, int it_max)//on pa
 {
 	int it = 0, delta1, delta2, beta1, beta2, gamma;
 	while (it < it_max) {
+
 		for (int i = 1; i <= instance.nb_client - 2;i++) {
-			delta1 = instance.distance[instance.V_som[i]][instance.V_som[i + 1]];		// D_b,a
+			delta1 = instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[i + 1]];		// D_b,a
+
 			for (int j = i + 2; j <= instance.nb_client;j++) {
-				delta2 = instance.distance[instance.V_som[j]][instance.V_som[j + 1]];
-				beta1 = instance.distance[instance.V_som[i]][instance.V_som[j]];
-				beta2 = instance.distance[instance.V_som[i + 1]][instance.V_som[j + 1]];
+				delta2 = instance.distance[tournee.liste_sauts[j]][tournee.liste_sauts[j + 1]];
+				beta1 = instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[j]];
+				beta2 = instance.distance[tournee.liste_sauts[i + 1]][tournee.liste_sauts[j + 1]];
 				gamma = beta1 + beta2 - delta1 - delta2;
+
 				if (gamma < 0) {
 					tournee.cout = tournee.cout + gamma;
 					rotation(tournee, i, j);

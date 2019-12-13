@@ -1,4 +1,4 @@
- #include "hvrp.hpp"
+#include "hvrp.hpp"
 
 void lire_instance_type1(std::string nom_fichier, T_instance &instance) {
 	std::ifstream fichier(nom_fichier);
@@ -26,7 +26,7 @@ void lire_instance_type1(std::string nom_fichier, T_instance &instance) {
 	fichier >> x[0];
 	fichier >> y[0];
 
-	for (int i = 1; i < instance.nb_client + 1; i++)//on r�cup les coords
+	for (int i = 1; i < instance.nb_client + 1; i++)//on récup les coords
 	{
 		fichier >> x[i];
 		fichier >> y[i];
@@ -292,7 +292,7 @@ void deplacement_sommet(T_tournee tournee) {
 }
 
 
-void init_tournee(T_tournee tournee) {
+void init_tournee(T_tournee& tournee) {
 	tournee.type_camion = 0;
 	tournee.cout = 0;
 	tournee.volume = 0;
@@ -304,7 +304,7 @@ void init_tournee(T_tournee tournee) {
 }
 
 
-void copier_tournee(T_tournee tournee_A, T_tournee tournee_B) //remplace la tournee B par la tournee A
+void copier_tournee(T_tournee tournee_A, T_tournee& tournee_B) //remplace la tournee B par la tournee A
 {
 	tournee_B.type_camion = tournee_A.type_camion;
 	tournee_B.cout = tournee_A.cout;
@@ -322,6 +322,77 @@ void evaluer_tournee(T_tournee tournee) //pour calculer la distance d'une tourne
 
 }
 
-void SPLIT(T_tour_geant tour_geant, T_solution sol, T_instance instance) {
+void copier_label(T_label l1, T_label& l2) 
+{
+	l2.capacite = l1.capacite;
+	l2.prix = l1.prix;
+	l2.pere = l1.pere;
+	l2.typecamion = l1.typecamion;
+}
 
+bool domine(T_label l1, T_label l2) // renvoie vrai si l1 domine l2, faux si non domination
+{
+	bool b = false;
+	if (l1.prix < l2.prix)
+	{
+		if (l1.capacite < l2.capacite)
+		{
+			b = true;
+		}
+	}
+	return b;
+}
+
+void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance) {
+	T_label lab;
+	double distance;
+	int capacite;
+	bool domination;
+	for (int i = 1; i < tour_geant.nb_sauts; i++)//on démarre bien à 1 et non à 0 car on ne compte pas le dépôt
+	{
+		distance = 0;
+		capacite = 0;
+		for (int j = i+1; j <= tour_geant.nb_sauts; j++)
+		{
+			distance += instance.distance[i][j];
+			capacite += instance.qte[j];
+
+			for (int k = 0; k < instance.nbtypecam; k++)
+			{
+				//on met les labels
+
+				if (capacite < instance.liste_types[k].capacite)//condition de capacite
+				{
+					lab.prix = instance.liste_types[k].cf + instance.liste_types[k].cv * (distance + instance.distance[0][i] + instance.distance[j][0] );//on ajoute le départ et le retour au dépôt
+					lab.capacite = capacite;
+					lab.typecamion = k;
+					lab.pere = i;
+				
+					domination = false;
+					for (int l = 0; l < tour_geant.nb_labels[j]; l++)//on regarde si on met le label
+					{												//c'est a dire s'il n'est pas domine par un autre
+						if (domine(lab, tour_geant.liste_labels[j][l]))
+						{
+							//on supprime le label
+							//à faire, il faut ensuite remettre les labels aux bonnes positions...
+							tour_geant.nb_labels[j]--;
+							domination = true;
+						}
+					}
+					if (domination) 
+					{
+						//on insère le label
+						tour_geant.nb_labels[j]++;
+						copier_label(lab, tour_geant.liste_labels[j][tour_geant.nb_labels[j]]);
+
+					}
+				}
+			}
+		}
+	}
+	//on a créé le graphe, il ne reste plus qu'à trouver le chemin critique pour former les tournées
+	//ne pas oublier que l'on est limité dans chaque type de camion
+	//il faut donc mettre des marques sur nos points afin de déterminer le cout des chemins 
+	//et appliquer le plus court chemin  (dijkstra??)
+	//en partant de la fin
 }

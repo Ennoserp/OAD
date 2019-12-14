@@ -35,7 +35,7 @@ typedef struct T_instance {
 typedef struct T_tournee {
 	int   type_camion = 0;					// type du camion sur la tournée
 	int   nb_sauts = 0;						// nombre de villes visitées pendant la tournée
-	int   liste_sauts[100];	    			// matrice des sauts /!\ à modifier
+	int   liste_sauts[100] = { 0 };	    			// matrice des sauts /!\ à modifier
 
 	double cout = 0.;						// cout de la tournée en euros
 	int	  volume = 0;						// volume déplacé par la tournée
@@ -45,23 +45,27 @@ typedef struct T_tournee {
 typedef struct T_label {
 	int capacite = 0;
 	double prix = 0;
-	int typecamion;
-	int pere;
+	int pere[100] = { 0 };
+	int nb_peres = 0;
+	int reste_camions[10] = { 0 };
+	int nb_sauts[100] = { 0 };
+	bool labels =  false;
+	int type_camion[100] = { -1 };
 }T_label;
 
 
 typedef struct T_tour_geant {
 	int nb_sauts = 0;
 	int liste_sauts[100];
-	T_label liste_labels[100][10]; 
-	int nb_labels[100];
+	T_label liste_labels[100][100]; 
+	int nb_labels[100] = { 0 };
 }T_tour_geant;
 
 
 typedef struct T_solution {
 	int		  cout_total = 0;				// cout total de la solution en euros
 	int       nb_tournees = 0;				// nombre de tournées dans cette instance
-	T_tournee liste[nmaxtournee];	    	// liste des tournées à réaliser
+	T_tournee liste_tournees[nmaxtournee];	    	// liste des tournées à réaliser
 }T_solution;
 
 
@@ -82,13 +86,15 @@ void tri(T_instance& instance, int i, int depart);
 
 void rotation(T_tournee& tournee, int i, int j);
 
-void tour_geant_ppv(T_instance& instance, T_tournee& tournee);
+void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee);
 
 void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee);
 
-void tour_geant_ordre_num(T_instance& instance, T_tournee& tournee);
+void tour_geant_ordre_num(T_instance& instance, T_tour_geant& tournee);
 
 void afficher_tournee(T_tournee tournee);
+
+void afficher_tour_geant(T_tour_geant tournee);
 
 int choix_voisin_aleatoire(int nb_sommets_restants);
 
@@ -96,9 +102,13 @@ void init_tournee(T_tournee& tournee);
 
 void copier_tournee(T_tournee tournee_A, T_tournee& tournee_B);
 
-void evaluer_tournee(T_tournee tournee);
+void evaluer_tournee(T_tournee& tournee, T_instance instance);
 
 void copier_label(T_label l1, T_label& l2);
+
+bool domine(T_label l1, T_label l2, T_instance ins);
+
+void tri_labels(T_tour_geant& tg, int indice_sommet);
 
 void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance);
 

@@ -1,6 +1,5 @@
 ﻿  hvrp.cpp
-  main.cpp
-  Génération de code en cours...
-C:\Users\J-PC\Documents\GitHub\OAD\TP3\main.cpp(6,12): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
-  LINK : C:\Users\J-PC\Documents\GitHub\OAD\TP3\Debug\HVRP.exe introuvable ou non généré par la dernière édition de liens incrémentielle ; édition de liens complète en cours
+C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(337,80): warning C4244: '+=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(500,22): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(435,10): warning C4101: 'a' : variable locale non référencée
   HVRP.vcxproj -> C:\Users\J-PC\Documents\GitHub\OAD\TP3\Debug\HVRP.exe

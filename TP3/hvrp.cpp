@@ -126,7 +126,7 @@ void trouver_proches_voisins(T_instance& instance, int liste_sommets_marques[], 
 }
 
 
-void tour_geant_ppv(T_instance& instance, T_tournee& tournee) {
+void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee) {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrep�t
 	int Px = 1;											// position du sommet dans L (???)
 	int nr = instance.nb_client;
@@ -181,7 +181,7 @@ void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee) {
 }
 
 
-void tour_geant_ordre_num(T_instance& instance, T_tournee& tournee) {
+void tour_geant_ordre_num(T_instance& instance, T_tour_geant& tournee) {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrep�t
 	for (int i = 1; i < instance.nb_client + 1; i++) { 
 		tournee.liste_sauts[i] = i;
@@ -219,7 +219,18 @@ void afficher_tournee(T_tournee tournee) {
 	std::cout << "Nombre de sauts : " << tournee.nb_sauts << std::endl;
 	std::cout << "Cout de la tournee : " << tournee.cout << std::endl;
 	std::cout << "Volume de la tournee : " << tournee.volume << std::endl;
-	for (int i = 0; i <= tournee.nb_sauts; i++)	{
+	std::cout << "Type camion : " << tournee.type_camion << std::endl;
+
+	for (int i = 0; i <= tournee.nb_sauts + 1; i++) {
+		std::cout << tournee.liste_sauts[i] << " ";
+	}
+}
+
+
+void afficher_tour_geant(T_tour_geant tournee) {
+	std::cout << std::endl << "------ TOUR GEANT ------" << std::endl;
+	std::cout << "Nombre de sauts : " << tournee.nb_sauts << std::endl;
+	for (int i = 0; i <= tournee.nb_sauts; i++) {
 		std::cout << tournee.liste_sauts[i] << " ";
 	}
 }
@@ -281,7 +292,7 @@ void deplacement_sommet(T_tournee tournee) {
 		{
 			init_tournee(tournee_a_tester);
 			//copier tournee et deplacer le sommet i � l'emplacement j
-			evaluer_tournee(tournee_a_tester);
+			//evaluer_tournee(tournee_a_tester);
 			if (tournee_a_tester.cout < tournee.cout) {
 				//Copier tournee_a_tester dans tournee (on garde la tourn�e test�e)
 				copier_tournee(tournee_a_tester, tournee);
@@ -310,89 +321,199 @@ void copier_tournee(T_tournee tournee_A, T_tournee& tournee_B) //remplace la tou
 	tournee_B.cout = tournee_A.cout;
 	tournee_B.volume = tournee_A.volume;
 	tournee_B.nb_sauts = tournee_A.nb_sauts;
-	for (int i = 0; i < tournee_A.nb_sauts; i++)
+	for (int i = 0; i < tournee_A.nb_sauts + 1; i++)
 	{
 		tournee_B.liste_sauts[i] = tournee_A.liste_sauts[i];
 	}
 }
 
 
-void evaluer_tournee(T_tournee tournee) //pour calculer la distance d'une tournee
+void evaluer_tournee(T_tournee& tournee, T_instance instance) //pour calculer la distance d'une tournee
 {
-
+	int dist = 0;
+	int volume = 0;
+	for (int i = 0; i < tournee.nb_sauts + 1; i++)
+	{
+		dist += instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[i + 1]];
+		volume += instance.qte[tournee.liste_sauts[i + 1]];
+	}
+	tournee.cout = instance.liste_types[tournee.type_camion].cf + dist * instance.liste_types[tournee.type_camion].cv;
+	tournee.volume = volume;
 }
 
 void copier_label(T_label l1, T_label& l2) 
 {
 	l2.capacite = l1.capacite;
 	l2.prix = l1.prix;
-	l2.pere = l1.pere;
-	l2.typecamion = l1.typecamion;
+	
+	l2.labels = false;
+	
+	for (int i = 0; i < 100; i++)
+	{
+		l2.type_camion[i] = l1.type_camion[i];
+		l2.nb_sauts[i] = l1.nb_sauts[i];
+		l2.pere[i] = l1.pere[i];
+		l2.nb_peres = l1.nb_peres;
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		l2.reste_camions[i] = l1.reste_camions[i];
+	}
 }
 
-bool domine(T_label l1, T_label l2) // renvoie vrai si l1 domine l2, faux si non domination
+
+bool domine(T_label l1, T_label l2, T_instance ins) // renvoie vrai si l1 domine l2, faux si non domination
 {
 	bool b = false;
-	if (l1.prix < l2.prix)
+	int compteur = 0;
+
+	if (l1.prix <= l2.prix)
 	{
-		if (l1.capacite < l2.capacite)
+		for (int i = 0; i < ins.nbtypecam; i++)
+		{
+			if (l1.reste_camions[i] >= l2.reste_camions[i]) {
+				compteur++;
+			}
+		}
+		if (compteur == ins.nbtypecam)
 		{
 			b = true;
-		}
+		}	
 	}
 	return b;
 }
 
+
+void tri_labels(T_tour_geant& tg, int indice_sommet) {
+	int j = 0; //compteur de labels pour le déplacement
+	int nb_lab = 0;
+	for (int i = 0; i < tg.nb_labels[indice_sommet]; i++)
+	{
+		if (!tg.liste_labels[indice_sommet][i].labels)//alors on déplace le label
+		{
+			if (i != j) //si i==j alors le label est à la bonne place
+			{
+				copier_label(tg.liste_labels[indice_sommet][i], tg.liste_labels[indice_sommet][j]);
+			}
+			j++;
+			nb_lab++;
+			
+		}
+	}
+	tg.nb_labels[indice_sommet] = nb_lab;
+}
+
 void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance) {
+
 	T_label lab;
 	double distance;
 	int capacite;
 	bool domination;
+	//il faut mettre des labels sur le premier sommet avant le premier saut pour initialiser
+	//init labels:
+	for (int i = 0; i < instance.nbtypecam; i++)
+	{
+		lab.reste_camions[i] = instance.liste_types[i].nb;
+	}
+	copier_label(lab, tour_geant.liste_labels[0][0]);
+	tour_geant.nb_labels[0]++;
+
 	for (int i = 1; i < tour_geant.nb_sauts; i++)//on démarre bien à 1 et non à 0 car on ne compte pas le dépôt
 	{
 		distance = 0;
 		capacite = 0;
-		for (int j = i+1; j <= tour_geant.nb_sauts; j++)
-		{
-			distance += instance.distance[i][j];
-			capacite += instance.qte[j];
 
+		for (int j = i; j <= tour_geant.nb_sauts; j++)
+		{
+			distance += instance.distance[tour_geant.liste_sauts[i]][tour_geant.liste_sauts[j]];
+			capacite += instance.qte[j];
+			
 			for (int k = 0; k < instance.nbtypecam; k++)
 			{
-				//on met les labels
-
-				if (capacite < instance.liste_types[k].capacite)//condition de capacite
-				{
-					lab.prix = instance.liste_types[k].cf + instance.liste_types[k].cv * (distance + instance.distance[0][i] + instance.distance[j][0] );//on ajoute le départ et le retour au dépôt
-					lab.capacite = capacite;
-					lab.typecamion = k;
-					lab.pere = i;
-				
-					domination = false;
-					for (int l = 0; l < tour_geant.nb_labels[j]; l++)//on regarde si on met le label
-					{												//c'est a dire s'il n'est pas domine par un autre
-						if (domine(lab, tour_geant.liste_labels[j][l]))
-						{
-							//on supprime le label
-							//à faire, il faut ensuite remettre les labels aux bonnes positions...
-							tour_geant.nb_labels[j]--;
-							domination = true;
-						}
-					}
-					if (domination) 
+				for (int labels = 0; labels < tour_geant.nb_labels[j-1]; labels++)
+				{	
+					int a;
+					if (capacite <= instance.liste_types[k].capacite && tour_geant.liste_labels[i - 1][labels].reste_camions[k] > 0)//condition de capacite on passe pas si un camion est rempli et de ressources (si on n'a pas de camion dispo)
 					{
-						//on insère le label
-						tour_geant.nb_labels[j]++;
-						copier_label(lab, tour_geant.liste_labels[j][tour_geant.nb_labels[j]]);
+						copier_label(tour_geant.liste_labels[i-1][labels], lab);
+						//prix du chemin qu'on vient de parcourir auquel on ajoute le prix des chemins précédents
+						lab.prix = instance.liste_types[k].cf + instance.liste_types[k].cv * (distance + instance.distance[0][tour_geant.liste_sauts[i]] + instance.distance[tour_geant.liste_sauts[j]][0] );//on ajoute le départ et le retour au dépôt
+						lab.capacite = capacite;											
+						lab.reste_camions[k]--;
+						
 
+						lab.type_camion[lab.nb_peres] = k;
+						lab.pere[lab.nb_peres] = i;
+						lab.nb_sauts[lab.nb_peres] = j - i + 1;
+						lab.nb_peres++;				
+				
+
+						int compteur_domi = 0;				//compteur pour la domination
+						domination = false;					//variable égale à true si on doit ajouter le label qu'on traite
+						if (tour_geant.nb_labels[j] != 0)	//s'il n'y a pas de label (0), on l'ajoute forcément
+						{						
+							for (int l = 0; l < tour_geant.nb_labels[j]; l++)//on regarde si on met le label
+							{												//c'est a dire s'il n'est pas dominé par un autre
+								if (domine(lab, tour_geant.liste_labels[j][l], instance))// si le label étudié domine un label présent
+								{
+									//on supprime le label
+									tour_geant.liste_labels[j][l].labels = true;
+									domination = true;
+								}
+								else if (!domine(tour_geant.liste_labels[j][l], lab, instance))//si le label étudié n'est pas dominé par un label présent
+								{
+									//si le label n'est pas dominé par tous les labels on doit l'ajouter
+									compteur_domi++;									
+								}
+							}
+							if (compteur_domi == tour_geant.nb_labels[j])
+							{
+								domination = true;
+							}
+						}
+						else 
+						{
+							domination = true; //pas de label donc on doit l'ajouter
+						}
+
+						tri_labels(tour_geant, j);
+
+						if (domination) 
+						{
+							//on insère le label				
+							copier_label(lab, tour_geant.liste_labels[j][tour_geant.nb_labels[j]]);
+							tour_geant.nb_labels[j]++;
+						}
 					}
 				}
 			}
 		}
 	}
-	//on a créé le graphe, il ne reste plus qu'à trouver le chemin critique pour former les tournées
-	//ne pas oublier que l'on est limité dans chaque type de camion
-	//il faut donc mettre des marques sur nos points afin de déterminer le cout des chemins 
-	//et appliquer le plus court chemin  (dijkstra??)
-	//en partant de la fin
+	//on va chercher le label au cout le plus faible dans le dernier saut, ce qui nous donnera le chemin à emprunter
+	copier_label(tour_geant.liste_labels[tour_geant.nb_sauts][0], lab);//changer le 0 !!! il faut chercher le meilleur label mais pour l'instant flemme
+
+	//construction de la solution:
+	T_tournee tour;
+	int total = 1;
+	lab.nb_sauts[lab.nb_peres - 1]--; //pour régler le problème avec le 0 mis à la fin du tour géant qui devient gênant ici.
+
+	sol.cout_total = lab.prix;
+	
+	for (int i = 0; i < lab.nb_peres; i++)
+	{
+		init_tournee(tour);
+		tour.type_camion = lab.type_camion[lab.nb_peres - i - 1];
+		for (int j = 0; j < lab.nb_sauts[lab.nb_peres - i - 1]; j++)
+		{
+			tour.liste_sauts[j+1] = tour_geant.liste_sauts[tour_geant.nb_sauts - (j + total)];
+			tour.nb_sauts++;
+			
+		}
+		total += lab.nb_sauts[lab.nb_peres - i - 1];
+		
+		evaluer_tournee(tour, instance);
+
+		copier_tournee(tour, sol.liste_tournees[sol.nb_tournees]);
+		sol.nb_tournees++;
+	}
 }

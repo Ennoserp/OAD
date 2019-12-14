@@ -1,5 +1,2 @@
-﻿  hvrp.cpp
-C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(337,80): warning C4244: '+=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(500,22): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(435,10): warning C4101: 'a' : variable locale non référencée
+﻿  main.cpp
   HVRP.vcxproj -> C:\Users\J-PC\Documents\GitHub\OAD\TP3\Debug\HVRP.exe

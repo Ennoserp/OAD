@@ -341,6 +341,7 @@ void evaluer_tournee(T_tournee& tournee, T_instance instance) //pour calculer la
 	tournee.volume = volume;
 }
 
+
 void copier_label(T_label l1, T_label& l2) 
 {
 	l2.capacite = l1.capacite;
@@ -403,6 +404,7 @@ void tri_labels(T_tour_geant& tg, int indice_sommet) {
 	tg.nb_labels[indice_sommet] = nb_lab;
 }
 
+
 void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance) {
 
 	T_label lab;
@@ -437,7 +439,7 @@ void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance) {
 					{
 						copier_label(tour_geant.liste_labels[i-1][labels], lab);
 						//prix du chemin qu'on vient de parcourir auquel on ajoute le prix des chemins précédents
-						lab.prix = instance.liste_types[k].cf + instance.liste_types[k].cv * (distance + instance.distance[0][tour_geant.liste_sauts[i]] + instance.distance[tour_geant.liste_sauts[j]][0] );//on ajoute le départ et le retour au dépôt
+						lab.prix = instance.liste_types[k].cf + instance.liste_types[k].cv * (distance + instance.distance[0][tour_geant.liste_sauts[i]] + instance.distance[tour_geant.liste_sauts[j]][0]) / 100;//on ajoute le départ et le retour au dépôt
 						lab.capacite = capacite;											
 						lab.reste_camions[k]--;
 						
@@ -517,3 +519,41 @@ void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance) {
 		sol.nb_tournees++;
 	}
 }
+
+/*
+void recherche_locale(T_solution sol) 
+{
+	int p1 = 0.5, p2 = 0.5, p3 = 0.5;
+	bool b1, b2, b3;
+	T_tournee tour;
+	for (int i = 0; i < NB_TOUR_MAX; i++)
+	{
+		b1 = b2 = b3 = false;
+
+		//premier opérateur:
+		// 2-opt
+		for (int j = 0; j < nb de sommet dans la tournee; j++)
+		{
+			//on réinitialise le tour, on lui applique le 2 opt et 
+			init_tournee(tour);
+
+		}
+
+
+		//deuxieme opérateur:
+		// déplacement de sommet
+		for (size_t i = 0; i < length; i++)
+		{
+
+		}
+
+
+		//troisième opérateur:
+		// 2-opt inter
+
+
+
+			   
+
+	}
+}*/

@@ -31,7 +31,7 @@
     <Text Include="instacentest.txt">
       <Filter>Fichiers de ressources</Filter>
     </Text>
-    <Text Include="paris.txt">
+    <Text Include="instances\paris.txt">
       <Filter>Fichiers de ressources</Filter>
     </Text>
   </ItemGroup>

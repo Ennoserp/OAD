@@ -1,5 +1,19 @@
 ﻿  hvrp.cpp
-C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(337,80): warning C4244: '+=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(500,22): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(435,10): warning C4101: 'a' : variable locale non référencée
-  HVRP.vcxproj -> C:\Users\J-PC\Documents\GitHub\OAD\TP3\Debug\HVRP.exe
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(321,31): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(330,32): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(334,31): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(336,32): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(340,31): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(342,32): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(369,21): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(378,22): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(382,21): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(384,22): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(388,21): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(390,22): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(462,80): warning C4244:  '+=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(625,22): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
+  main.cpp
+  Génération de code en cours...
+C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(560,10): warning C4101:  'a' : variable locale non référencée
+  HVRP.vcxproj -> C:\Users\Clément\Documents\GitHub\OAD\TP3\Debug\HVRP.exe

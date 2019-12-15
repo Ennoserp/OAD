@@ -19,6 +19,13 @@ int main() {
 	
 	//rotation(tournee, 2, 14);
 	
+	//operateur_2_opt(instance_type2, tournee, 20); // a l'air ok ? jsp on n'a pas le cout des tournees de base
+	//afficher_tournee(tournee);
+	
+	SPLIT(tour_geant, sol, instance_type2);
+	
+
+	//operateur 2 opt sur toutes les tournees
 	
 	//afficher_tournee(tournee);
 	

@@ -3,7 +3,7 @@
 
 
 int main() {
-	srand(0);
+	srand(time(0));
 	//T_instance instance_type1;
 	T_instance instance_type2;
 	T_tour_geant tour_geant;
@@ -15,7 +15,9 @@ int main() {
 	lire_instance_type2("instances/paris.txt", instance_type2);
 	
 	tour_geant_ppv(instance_type2, tour_geant);
+	tour_geant_ordre_num(instance_type2, tour_geant2);
 	afficher_tour_geant(tour_geant);
+	afficher_tour_geant(tour_geant2);
 	
 	//rotation(tournee, 2, 14);
 	

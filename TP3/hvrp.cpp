@@ -182,7 +182,7 @@ void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee) {
 
 
 void tour_geant_ordre_num(T_instance& instance, T_tour_geant& tournee) {
-	tournee.liste_sauts[0] = 0;							// on part de l'entrep�t
+	tournee.liste_sauts[0] = 0;							// on part de l'entrepot
 	for (int i = 1; i < instance.nb_client + 1; i++) { 
 		tournee.liste_sauts[i] = i;
 		tournee.nb_sauts++;
@@ -215,7 +215,6 @@ int choix_voisin_aleatoire(int nb_sommets_restants) {
 
 
 void afficher_tournee(T_tournee tournee)
-
 {
 	std::cout << std::endl << "------ TOURNEE ------" << std::endl;
 	std::cout << "Nombre de sauts : " << tournee.nb_sauts << std::endl;
@@ -250,7 +249,42 @@ void rotation(T_tournee& tournee, int i, int j) //ok
 		tournee.liste_sauts[i + k + 1] = tournee.liste_sauts[j - k];
 		tournee.liste_sauts[j - k] = temp;
 	}
-	
+}
+
+void rotation_inter_tournee(T_tournee& tournee1, T_tournee& tournee2, int i, int j) {//ok
+	int temp = 0;
+	T_tournee temp1, temp2;
+
+	init_tournee(temp1);
+	init_tournee(temp2);
+	copier_tournee(tournee1, temp1);
+	copier_tournee(tournee2, temp2);
+	vider_tournee_sup_i(tournee1, i);
+	vider_tournee_sup_i(tournee2, j);
+
+	for (int k = 1; k <= tournee2.nb_sauts - j; k++) 
+	{
+		tournee1.liste_sauts[i + k] = temp2.liste_sauts[j + k];
+	}
+
+	for (int k = 1; k <= tournee1.nb_sauts - i; k++)
+	{
+		tournee2.liste_sauts[j + k] = temp1.liste_sauts[i + k];
+	}
+
+	temp = tournee1.nb_sauts;
+	tournee1.nb_sauts = i +  tournee2.nb_sauts - j;
+	tournee2.nb_sauts = j + temp - i;
+
+}
+
+
+void vider_tournee_sup_i(T_tournee& tournee, int i) 
+{
+	for (int k = i + 1; k <= tournee.nb_sauts; k++) 
+	{
+		tournee.liste_sauts[k] = 0;
+	}
 }
 
 
@@ -258,16 +292,19 @@ void operateur_2_opt(T_instance instance,T_tournee& tournee)//ok
 {
 	double delta1, delta2, beta1, beta2, gamma;
 
-	for (int i = 1; i <= tournee.nb_sauts - 2; i++) {
+	for (int i = 1; i <= tournee.nb_sauts - 2; i++)
+	{
 		delta1 = instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[i + 1]];
 
-		for (int j = i + 2; j <= tournee.nb_sauts; j++) {
+		for (int j = i + 2; j <= tournee.nb_sauts; j++) 
+		{
 			delta2 = instance.distance[tournee.liste_sauts[j]][tournee.liste_sauts[j + 1]];
 			beta1 = instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[j]];
 			beta2 = instance.distance[tournee.liste_sauts[i + 1]][tournee.liste_sauts[j + 1]];
 			gamma = beta1 + beta2 - delta1 - delta2;
 
-			if (gamma < 0) {
+			if (gamma < 0) 
+			{
 				tournee.cout = tournee.cout + gamma;
 				rotation(tournee, i, j);
 			}
@@ -276,12 +313,72 @@ void operateur_2_opt(T_instance instance,T_tournee& tournee)//ok
 }
 
 
-
-
-void operateur_2_opt_inter_tournee()
+void operateur_2_opt_inter_tournee(T_instance& instance, T_tournee& tournee1, T_tournee& tournee2, int it_max) 
 {
-	// attention! est-ce que la ocnfiguration est faisable ? sachant que les v�hicules ne sont plus les m�mes
-	// les capa ont chang� et les couts fixe/variables ont chang� !
+	int it = 0, dist_temp = 0, v1 = 0, v2 = 0, capatemp = 0;
+	int dist_1 = 0, dist_2 = 0;
+	double cout_1 = 0., cout_2 = 0.;
+
+	while (it < it_max) 
+	{
+		for (int i = 1; i <= tournee1.nb_sauts - 1; i++) 
+		{
+			dist_1 = 0;
+			v1 = 0;
+			for (int u = 0; u < i; u++) 
+			{
+				dist_1 = dist_1 + instance.distance[tournee1.liste_sauts[u]][tournee1.liste_sauts[u + 1]];
+				v1 = v1 + instance.qte[tournee1.liste_sauts[u + 1]];
+			}
+			dist_temp = dist_1;
+			capatemp = v1;
+			for (int j = 1; j <= tournee2.nb_sauts - 1; j++) 
+			{
+				dist_2 = 0;
+				v2 = 0;
+				dist_1 = dist_temp;
+				v1 = capatemp;
+
+				for (int u = 0; u < j; u++) 
+				{
+					dist_2 = dist_2 + instance.distance[tournee2.liste_sauts[u]][tournee2.liste_sauts[u + 1]];
+					v2 = v2 + instance.qte[tournee2.liste_sauts[u + 1]];
+				}
+
+
+				dist_1 = dist_1 + instance.distance[tournee1.liste_sauts[i]][tournee2.liste_sauts[j + 1]];
+				v1 = v1 + instance.qte[tournee1.liste_sauts[j + 1]];
+				for (int k = 1; k <= tournee2.nb_sauts - j; k++) 
+				{
+					dist_1 = dist_1 + instance.distance[tournee2.liste_sauts[j + k]][tournee2.liste_sauts[j + k + 1]];
+					v1 = v1 + instance.qte[tournee1.liste_sauts[j + k + 1]];
+				}
+
+
+				dist_2 = dist_2 + instance.distance[tournee2.liste_sauts[j]][tournee1.liste_sauts[i + 1]];
+				v2 = v2 + instance.qte[tournee2.liste_sauts[i + 1]];
+				for (int k = 1; k <= tournee1.nb_sauts - i; k++) 
+				{
+					dist_2 = dist_2 + instance.distance[tournee1.liste_sauts[i + k]][tournee1.liste_sauts[i + k + 1]];
+					v2 = v2 + instance.qte[tournee2.liste_sauts[i + k + 1]];
+				}
+
+				cout_1 = instance.liste_types[tournee1.type_camion].cf + (dist_1/100) * instance.liste_types[tournee1.type_camion].cv;
+				cout_2 = instance.liste_types[tournee2.type_camion].cf + (dist_2/100) * instance.liste_types[tournee2.type_camion].cv;
+
+				if (((cout_1 <= tournee1.cout) && (cout_2 <= tournee2.cout)) && ((v1 <= instance.liste_types[tournee1.type_camion].capacite) && (v2 <= instance.liste_types[tournee2.type_camion].capacite)))
+				{
+					tournee1.cout = cout_1;
+					tournee2.cout = cout_2;
+					instance.liste_types[tournee1.type_camion].capacite = v1;
+					instance.liste_types[tournee2.type_camion].capacite = v2;
+					rotation_inter_tournee(tournee1, tournee2, i, j);
+					std::cout << std::endl << std::endl << "/!\\ _____ Tournee amelioree _____ /!\\";
+				}
+			}
+		}
+		it++;
+	}
 }
 
 

@@ -12,7 +12,7 @@ int main() {
 	
 	//lire_instance_type1("instacentest.txt", instance_type1);
 
-	lire_instance_type2("paris.txt", instance_type2);
+	lire_instance_type2("instances/paris.txt", instance_type2);
 
 	tour_geant_ppv(instance_type2, tour_geant);
 	tour_geant_ordre_num(instance_type2, tour_geant2);
@@ -23,7 +23,7 @@ int main() {
 	
 	//operateur_2_opt(instance_type2, tournee, 20); // a l'air ok ? jsp on n'a pas le cout des tournees de base
 	//afficher_tournee(tournee);
-
+	/*
 	SPLIT(tour_geant, sol, instance_type2);
 	
 

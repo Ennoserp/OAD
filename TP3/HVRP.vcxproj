@@ -135,7 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="instacentest.txt" />
-    <Text Include="paris.txt" />
+    <Text Include="instances\paris.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

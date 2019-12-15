@@ -1,5 +1,17 @@
 #include "hvrp.hpp"
 
+/************************************************************/
+/*															*/
+/*	Procedure permettant de lire un fichier.txt	du type 1	*/
+/*	et d'en extraire les donnees des distances,	des camions */
+/*	et de leurs attributs etc...							*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		nom_fichier				nom du fichier txt			*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*															*/
+/************************************************************/
 void lire_instance_type1(std::string nom_fichier, T_instance &instance) {
 	std::ifstream fichier(nom_fichier);
 	
@@ -42,6 +54,18 @@ void lire_instance_type1(std::string nom_fichier, T_instance &instance) {
 }
 
 
+/************************************************************/
+/*															*/
+/*	Procedure permettant de lire un fichier.txt	du type 2	*/
+/*	et d'en extraire les donnees des distances,	des camions */
+/*	et de leurs attributs etc...							*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		nom_fichier				nom du fichier txt			*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*															*/
+/************************************************************/
 void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 	std::ifstream fichier(nom_fichier);
 	int a;
@@ -84,6 +108,18 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 }
 
 
+/************************************************************/
+/*															*/
+/*	Procedure permettant de trier le tableau des voisins	*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*		i						indice du tableau des		*/
+/*								voisins						*/
+/*		k						numero du sommet courant	*/
+/*															*/
+/************************************************************/
 void tri(T_instance& instance, int i, int depart) 
 {
 	int j = i, stop = 0, temp;								// j : indice de tri   ;   stop : valeur d'arrêt   ;   temp : valeur temporaire
@@ -101,7 +137,15 @@ void tri(T_instance& instance, int i, int depart)
 	}
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant d'initialiser tableau de voisins	*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*															*/
+/************************************************************/
 void initialiser_voisins(T_instance& instance)
 {
 	for (int i = 0; i < 6;i++) {
@@ -110,11 +154,25 @@ void initialiser_voisins(T_instance& instance)
 }
 
 
+/************************************************************/
+/*															*/
+/*	Procedure permettant de trouver les 5 plus proches		*/
+/*	voisins d'un sommet										*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*		liste_sommets_marques	liste indiquant si le		*/
+/*								sommet i a ete visité		*/
+/*		depart					sommet dont on cherche les	*/
+/*								voisins						*/
+/*															*/
+/************************************************************/
 void trouver_proches_voisins(T_instance& instance, int liste_sommets_marques[], int depart)
 {
 	int i = 0;										// i : indice du tableau des voisins
 	initialiser_voisins(instance);
-	for (int k = 0; k <= instance.nb_client; k++)	// k : num�ro du sommet courant
+	for (int k = 0; k <= instance.nb_client; k++)	// k : numero du sommet courant
 	{
 		if (k != depart && liste_sommets_marques[k]==0) {
 
@@ -127,11 +185,23 @@ void trouver_proches_voisins(T_instance& instance, int liste_sommets_marques[], 
 	}
 }
 
-
-void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee)
+/************************************************************/
+/*															*/
+/*	Procedure permettant de creer un tour geant en			*/
+/*	utilisant la methode des plus proches voisins			*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*		tour_geant				tableau contenant			*/
+/*								l'ensemble des sommets ce	*/
+/*								qui represente un tr geant	*/
+/*															*/
+/************************************************************/
+void tour_geant_ppv(T_instance& instance, T_tour_geant& tour_geant)
 {
-	tournee.liste_sauts[0] = 0;							// on part de l'entrep�t
-	int Px = 1;											// position du sommet dans L
+	tour_geant.liste_sauts[0] = 0;							// on part de l'entrepot
+	int Px = 1;												// position du sommet dans L
 	int nr = instance.nb_client;
 	int x;
 	int M[nmax] = { 0 };
@@ -144,20 +214,33 @@ void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee)
 
 	for (int i = 1; i < instance.nb_client + 1; i++) 
 	{ 
-		x = tournee.liste_sauts[i - 1];
+		x = tour_geant.liste_sauts[i - 1];
 		M[x] = 1;
 		L[Px] = L[nr];
 		nr--;
 
 		trouver_proches_voisins(instance, M, x);
-		tournee.liste_sauts[i] = instance.V_som[0];
-		tournee.nb_sauts++;
+		tour_geant.liste_sauts[i] = instance.V_som[0];
+		tour_geant.nb_sauts++;
 	}
-	tournee.nb_sauts++;
-	tournee.liste_sauts[tournee.nb_sauts] = 0;
+	tour_geant.nb_sauts++;
+	tour_geant.liste_sauts[tour_geant.nb_sauts] = 0;
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant de creer un tour geant en			*/
+/*	utilisant la methode des plus proches voisins			*/
+/*	en mettant en jeu de l'aleatoire						*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*		tour_geant				tableau contenant			*/
+/*								l'ensemble des sommets ce	*/
+/*								qui represente un tr geant	*/
+/*															*/
+/************************************************************/
 void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee) 
 {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
@@ -186,7 +269,19 @@ void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee)
 	
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant de creer un tour geant en			*/
+/*	les choisissant dans l'ordre croissant de leur numero	*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*		tour_geant				tableau contenant			*/
+/*								l'ensemble des sommets ce	*/
+/*								qui represente un tr geant	*/
+/*															*/
+/************************************************************/
 void tour_geant_ordre_num(T_instance& instance, T_tour_geant& tournee) 
 {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepot
@@ -198,7 +293,17 @@ void tour_geant_ordre_num(T_instance& instance, T_tour_geant& tournee)
 	tournee.liste_sauts[tournee.nb_sauts] = 0;
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant de creer un tour geant en			*/
+/*	utilisant la methode des plus proches voisins			*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		nb_sommets_restants		nombre de sommets non		*/
+/*								visites dans la recherche	*/
+/*								des voisins					*/
+/*															*/
+/************************************************************/
 int choix_voisin_aleatoire(int nb_sommets_restants) {
 	int stop = 0, l = 1;
 	int a;
@@ -221,7 +326,15 @@ int choix_voisin_aleatoire(int nb_sommets_restants) {
 	return retour;
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant d'afficher  une tournee sur 		*/
+/*	l'invite de commande									*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		tournee					tournee a afficher			*/
+/*															*/
+/************************************************************/
 void afficher_tournee(T_tournee tournee)
 {
 	std::cout << std::endl << "------ TOURNEE ------" << std::endl;
@@ -236,16 +349,38 @@ void afficher_tournee(T_tournee tournee)
 }
 
 
-void afficher_tour_geant(T_tour_geant tournee) 
+/************************************************************/
+/*															*/
+/*	Procedure permettant d'afficher  une tour geant sur 	*/
+/*	l'invite de commande									*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		tour_geant				tour_geant a afficher		*/
+/*															*/
+/************************************************************/
+void afficher_tour_geant(T_tour_geant tour_geant) 
 {
 	std::cout << std::endl << "------ TOUR GEANT ------" << std::endl;
-	std::cout << "Nombre de sauts : " << tournee.nb_sauts << std::endl;
-	for (int i = 0; i <= tournee.nb_sauts; i++) {
-		std::cout << tournee.liste_sauts[i] << " ";
+	std::cout << "Nombre de sauts : " << tour_geant.nb_sauts << std::endl;
+	for (int i = 0; i <= tour_geant.nb_sauts; i++) {
+		std::cout << tour_geant.liste_sauts[i] << " ";
 	}
 }
 
 
+/************************************************************/
+/*															*/
+/*	Procedure permettant d'effectuer la rotation des  		*/
+/*	sommets dans le cadre de l'operateur 2_opt				*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		tournee					tournee a afficher			*/
+/*		i						indice du sommet a partir 	*/
+/*								duquel il faut sauter	 	*/
+/*		j						indice du sommet jusqu'ou	*/
+/*								il faut sauter				*/
+/*															*/
+/************************************************************/
 void rotation(T_tournee& tournee, int i, int j)
 {
 	int temp=0;
@@ -260,6 +395,23 @@ void rotation(T_tournee& tournee, int i, int j)
 	}
 }
 
+
+/************************************************************/
+/*															*/
+/*	Procedure permettant d'effectuer la rotation des  		*/
+/*	sommets entre deux tournees differentes					*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		tournee1				tournee1					*/
+/*		tournee1				tournee2					*/
+/*		i						indice du sommet a partir 	*/
+/*								duquel il faut sauter	 	*/
+/*								dans la tournee 1		 	*/
+/*		j						indice du sommet a partir	*/
+/*								duquel il faut sauter		*/
+/*								dans la tournee 2			*/
+/*															*/
+/************************************************************/
 void rotation_inter_tournee(T_tournee& tournee1, T_tournee& tournee2, int i, int j) 
 {
 	int temp = 0;
@@ -288,7 +440,18 @@ void rotation_inter_tournee(T_tournee& tournee1, T_tournee& tournee2, int i, int
 
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant de supprimer, pour une tournee,	*/
+/*	tous les sommets suivant le sommet i					*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		tournee					tournee a vider				*/
+/*		i						indice du sommet a partir	*/
+/*								duquel il faut supprimer	*/
+/*								les sauts					*/
+/*															*/
+/************************************************************/
 void vider_tournee_sup_i(T_tournee& tournee, int i) 
 {
 	for (int k = i + 1; k <= tournee.nb_sauts; k++) 
@@ -297,7 +460,18 @@ void vider_tournee_sup_i(T_tournee& tournee, int i)
 	}
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant de tester si une rotation peut 	*/
+/*	etre benefique puis, le cas echeant, la realise			*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*		tournee					tournee sur laquelle on va	*/
+/*								tester les rotations		*/
+/*															*/
+/************************************************************/
 void operateur_2_opt(T_instance instance,T_tournee& tournee)
 {
 	double delta1, delta2, beta1, beta2, gamma;
@@ -322,7 +496,19 @@ void operateur_2_opt(T_instance instance,T_tournee& tournee)
 	}	
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant de tester si une rotation entre	*/
+/*	deux tournees peut etre benefique puis, le cas echeant, */
+/*	 la realise												*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*		tournee1				premiere tournee			*/
+/*		tournee2				deuxieme tournee			*/
+/*															*/
+/************************************************************/
 void operateur_2_opt_inter_tournee(T_instance instance, T_tournee& tournee1, T_tournee& tournee2) 
 {
 	int dist_temp = 0, v1 = 0, v2 = 0, capatemp = 0;
@@ -386,8 +572,19 @@ void operateur_2_opt_inter_tournee(T_instance instance, T_tournee& tournee1, T_t
 	}	
 }
 
-
-void deplacement_sommet(T_instance ins, T_tournee& tournee) 
+/************************************************************/
+/*															*/
+/*	Procedure permettant de deplacer des sommets pour		*/
+/*	tenter d'ameliorer une tournee							*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*		tournee					tournee qu'on tente 		*/
+/*								d'ameliorer					*/
+/*															*/
+/************************************************************/
+void deplacement_sommet(T_instance instance, T_tournee& tournee) 
 {
 	int dist = 0;
 	int indI = 1;
@@ -404,13 +601,13 @@ void deplacement_sommet(T_instance ins, T_tournee& tournee)
 
 			if (i != j && i != j + 1) 
 			{
-				dist -= ins.distance[tournee.liste_sauts[i - 1]][tournee.liste_sauts[i]];
-				dist -= ins.distance[tournee.liste_sauts[i]][tournee.liste_sauts[i + 1]];
-				dist -= ins.distance[tournee.liste_sauts[j]][tournee.liste_sauts[j + 1]];
+				dist -= instance.distance[tournee.liste_sauts[i - 1]][tournee.liste_sauts[i]];
+				dist -= instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[i + 1]];
+				dist -= instance.distance[tournee.liste_sauts[j]][tournee.liste_sauts[j + 1]];
 
-				dist += ins.distance[tournee.liste_sauts[i - 1]][tournee.liste_sauts[i + 1]];
-				dist += ins.distance[tournee.liste_sauts[j]][tournee.liste_sauts[i]];
-				dist += ins.distance[tournee.liste_sauts[i]][tournee.liste_sauts[j+1]];
+				dist += instance.distance[tournee.liste_sauts[i - 1]][tournee.liste_sauts[i + 1]];
+				dist += instance.distance[tournee.liste_sauts[j]][tournee.liste_sauts[i]];
+				dist += instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[j+1]];
 				if (dist < 0 && dist < minDist)
 				{
 					minDist = dist;
@@ -431,11 +628,18 @@ void deplacement_sommet(T_instance ins, T_tournee& tournee)
 			tournee.liste_sauts[i] = tournee.liste_sauts[i + 1];
 		}
 		tournee.liste_sauts[indJ] = s;
-		tournee.cout += dist * ins.liste_types[tournee.type_camion].cv;
+		tournee.cout += dist * instance.liste_types[tournee.type_camion].cv;
 	}
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant d'initialiser une tournee			*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		tournee					tournee						*/
+/*															*/
+/************************************************************/
 void init_tournee(T_tournee& tournee) 
 {
 	tournee.type_camion = 0;
@@ -448,7 +652,15 @@ void init_tournee(T_tournee& tournee)
 	}	
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant de copier une tournee				*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		tournee_A				tournee	a copier			*/
+/*		tournee_B				future tournee				*/
+/*															*/
+/************************************************************/
 void copier_tournee(T_tournee tournee_A, T_tournee& tournee_B) //remplace la tournee B par la tournee A
 {
 	tournee_B.type_camion = tournee_A.type_camion;
@@ -461,7 +673,17 @@ void copier_tournee(T_tournee tournee_A, T_tournee& tournee_B) //remplace la tou
 	}
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant d'evaluer le cout et le volume		*/
+/*	deplace d'une tournee									*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*		tournee					tournee a evaluer			*/
+/*															*/
+/************************************************************/
 void evaluer_tournee(T_tournee& tournee, T_instance instance) //pour calculer la distance d'une tournee
 {
 	int dist = 0;
@@ -497,20 +719,20 @@ void copier_label(T_label l1, T_label& l2)
 }
 
 
-bool domine(T_label l1, T_label l2, T_instance ins) // renvoie vrai si l1 domine l2, faux si non domination
+bool domine(T_label l1, T_label l2, T_instance instance) // renvoie vrai si l1 domine l2, faux si non domination
 {
 	bool b = false;
 	int compteur = 0;
 
 	if (l1.prix <= l2.prix)
 	{
-		for (int i = 0; i < ins.nbtypecam; i++)
+		for (int i = 0; i < instance.nbtypecam; i++)
 		{
 			if (l1.reste_camions[i] >= l2.reste_camions[i]) {
 				compteur++;
 			}
 		}
-		if (compteur == ins.nbtypecam)
+		if (compteur == instance.nbtypecam)
 		{
 			b = true;
 		}	
@@ -656,7 +878,14 @@ void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance)
 	}
 }
 
-
+/************************************************************/
+/*															*/
+/*	Procedure permettant d'avoir une probabilite			*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		p						permet de definir le seuil	*/
+/*															*/
+/************************************************************/
 bool bernoulli(float p)
 {
 	int retour = false, max_nb = 100000;
@@ -668,8 +897,19 @@ bool bernoulli(float p)
 	return retour;
 }
 
-
-void recherche_locale(T_instance ins,T_solution sol) 
+/************************************************************/
+/*															*/
+/*	Procedure permettant d'optimiser une solution en la		*/
+/*	faisant passer a travers 3 operateurs differents et en	*/
+/*	rendant un operateur efficace plus probable				*/
+/*															*/
+/*	Fichiers en entree:										*/
+/*		instance				variable stockant			*/
+/*								les donnees					*/
+/*		sol						solution a optimiser		*/
+/*															*/
+/************************************************************/
+void recherche_locale(T_instance instance,T_solution sol) 
 {
 	float p1 = 0.5, p2 = 0.5, p3 = 0.5;
 	int cout = 0, cout2 = 0;
@@ -684,7 +924,7 @@ void recherche_locale(T_instance ins,T_solution sol)
 			for (int j = 0; j < sol.nb_tournees; j++)
 			{
 				cout = sol.liste_tournees[j].cout;
-				operateur_2_opt(ins, sol.liste_tournees[j]);
+				operateur_2_opt(instance, sol.liste_tournees[j]);
 
 				if (sol.liste_tournees[j].cout < cout)
 				{
@@ -711,7 +951,7 @@ void recherche_locale(T_instance ins,T_solution sol)
 			for (int j = 0; j < sol.nb_tournees; j++)
 			{
 				cout = sol.liste_tournees[j].cout;
-				deplacement_sommet(ins, sol.liste_tournees[j]);
+				deplacement_sommet(instance, sol.liste_tournees[j]);
 				if (sol.liste_tournees[j].cout < cout)
 				{
 					//recalcul du cout total
@@ -745,7 +985,7 @@ void recherche_locale(T_instance ins,T_solution sol)
 						cout = sol.liste_tournees[j].cout;
 						cout = sol.liste_tournees[k].cout;
 
-						operateur_2_opt_inter_tournee(ins, sol.liste_tournees[j], sol.liste_tournees[k]); 
+						operateur_2_opt_inter_tournee(instance, sol.liste_tournees[j], sol.liste_tournees[k]); 
 
 						if (sol.liste_tournees[j].cout < cout && sol.liste_tournees[k].cout < cout2)
 						{

@@ -12,7 +12,7 @@ const int nmaxtype = 10;				// nombre maximal de types de camions
 const int nmax_som_par_tournee = 30;	// pas représentatif
 const int it_max = 15;					// nombre max de coups autorisés pour le mouvement 2-opt
 
-const int NB_TOUR_MAX = 100;			//nombre de tour maximal pour la recherche locale
+const int NB_TOUR_MAX = 15;			//nombre de tour maximal pour la recherche locale
 
 
 typedef struct T_camion {

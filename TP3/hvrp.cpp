@@ -182,7 +182,7 @@ void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee) {
 
 
 void tour_geant_ordre_num(T_instance& instance, T_tour_geant& tournee) {
-	tournee.liste_sauts[0] = 0;							// on part de l'entrep�t
+	tournee.liste_sauts[0] = 0;							// on part de l'entrepot
 	for (int i = 1; i < instance.nb_client + 1; i++) { 
 		tournee.liste_sauts[i] = i;
 		tournee.nb_sauts++;

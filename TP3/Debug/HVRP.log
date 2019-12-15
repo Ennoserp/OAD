@@ -14,6 +14,7 @@ C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(390,22): warning C4244:  '='
 C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(462,80): warning C4244:  '+=' : conversion de 'double' en 'int', perte possible de données
 C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(625,22): warning C4244:  '=' : conversion de 'double' en 'int', perte possible de données
   main.cpp
-  Génération de code en cours...
 C:\Users\Clément\Documents\GitHub\OAD\TP3\hvrp.cpp(560,10): warning C4101:  'a' : variable locale non référencée
+  Génération de code en cours...
+C:\Users\Clément\Documents\GitHub\OAD\TP3\main.cpp(6,12): warning C4244:  'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
   HVRP.vcxproj -> C:\Users\Clément\Documents\GitHub\OAD\TP3\Debug\HVRP.exe

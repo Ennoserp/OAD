@@ -86,9 +86,10 @@ void rotation(T_tournee& tournee, int i, int j);
 void rotation_inter_tournee(T_tournee& tournee1, T_tournee& tournee2, int i, int j);
 
 void vider_tournee_sup_i(T_tournee& tournee, int i);
-void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee);
 
+void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee);
 void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee);
+void tour_geant_ordre_num(T_instance& instance, T_tour_geant& tournee);
 
 void operateur_2_opt_inter_tournee(T_instance& instance, T_tournee& tournee1, T_tournee& tournee2, int it_max);
 

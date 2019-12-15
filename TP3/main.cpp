@@ -15,20 +15,18 @@ int main() {
 	lire_instance_type2("instances/paris.txt", instance_type2);
 
 	tour_geant_ppv(instance_type2, tour_geant);
-	tour_geant_ordre_num(instance_type2, tour_geant2);
 	afficher_tour_geant(tour_geant);
-	afficher_tour_geant(tour_geant2);
 	
 	//rotation(tournee, 2, 14);
 	
 	//operateur_2_opt(instance_type2, tournee, 20); // a l'air ok ? jsp on n'a pas le cout des tournees de base
 	//afficher_tournee(tournee);
-	/*
+	
 	SPLIT(tour_geant, sol, instance_type2);
 	
 
 	//operateur 2 opt sur toutes les tournees
-	
+	/*
 	for (int i = 0; i < sol.nb_tournees; i++)
 	{
 		afficher_tournee(sol.liste_tournees[i]);
@@ -36,10 +34,10 @@ int main() {
 		afficher_tournee(sol.liste_tournees[i]);
 		std::cout << std::endl << std::endl << std::endl << std::endl;
   	}
-	
+	*/
 
 	// operateur 2 opt inter tournees avec la formule du cout = instance.liste_types[tournee.type_camion].cf + dist * instance.liste_types[tournee.type_camion].cv;
-	/*
+	
 	for (int i = 0; i < sol.nb_tournees; i++) {
 		afficher_tournee(sol.liste_tournees[i]);
 		for (int j = i + 1; j < sol.nb_tournees; j++) {
@@ -50,7 +48,7 @@ int main() {
 	for (int i = 0; i < sol.nb_tournees; i++) {
 		afficher_tournee(sol.liste_tournees[i]);
 	}	
-	*/
+	
 	
 
 

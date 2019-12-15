@@ -30,54 +30,24 @@ int main() {
 	//afficher_tournee(tournee);
 	
 	SPLIT(tour_geant, sol, instance_type2);
-	/*
+	
 	for (int i = 0; i < sol.nb_tournees; i++)
 	{
 		afficher_tournee(sol.liste_tournees[i]);
-		operateur_2_opt(instance_type2, sol.liste_tournees[i], 15);
-		afficher_tournee(sol.liste_tournees[i]);
-		std::cout << std::endl << std::endl << std::endl << std::endl;
   	}
-	*/
-
-	// operateur 2 opt inter tournees avec la formule du cout = instance.liste_types[tournee.type_camion].cf + dist * instance.liste_types[tournee.type_camion].cv;
 	
-	for (int i = 0; i < sol.nb_tournees; i++) {
-		afficher_tournee(sol.liste_tournees[i]);
-		for (int j = i + 1; j < sol.nb_tournees; j++) {
-			operateur_2_opt_inter_tournee(instance_type2, sol.liste_tournees[i], sol.liste_tournees[j], 15);
-		}
-	}
-	std::cout << std::endl << std::endl << std::endl << std::endl;
-	for (int i = 0; i < sol.nb_tournees; i++) {
-		afficher_tournee(sol.liste_tournees[i]);
-	}	
-	
-	
-
-
-	// 2_opt_inter avec mauvaise formule ?
-	/*
-	for (int i = 0; i < sol.nb_tournees; i++) {
-		afficher_tournee(sol.liste_tournees[i]);
-		for (int j = i + 1; j < sol.nb_tournees; j++) {
-			operateur_2_opt_inter_tournee_bis(instance_type2, sol.liste_tournees[i], sol.liste_tournees[j], 15);
-		}
-	}
-	std::cout << std::endl << std::endl << std::endl << std::endl;
-	for (int i = 0; i < sol.nb_tournees; i++) {
-		afficher_tournee(sol.liste_tournees[i]);
-	}	
-	*/
-  	
-	
-	afficher_tournee(sol.liste_tournees[0]);
+	recherche_locale(instance_type2, sol);
+	//afficher_tournee(sol.liste_tournees[0]);
 
 	//operateur_2_opt(instance_type2, sol.liste_tournees[0], 20); // a l'air ok ? jsp on n'a pas le cout des tournees de base
 	//rotation(sol.liste_tournees[0], 1, 4);
 	//deplacement_sommet(instance_type2, sol.liste_tournees[0]);
-	afficher_tournee(sol.liste_tournees[0]);
+	//afficher_tournee(sol.liste_tournees[0]);
 
+	for (int i = 0; i < sol.nb_tournees; i++)
+	{
+		afficher_tournee(sol.liste_tournees[i]);
+	}
 
 	return 0;
 }

@@ -65,7 +65,7 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 	std::getline(fichier, ligne);
 	std::getline(fichier, ligne);
 
-	for (int i = 0; i <= instance.nb_client; i++)//on r�cup les coords
+	for (int i = 0; i <= instance.nb_client; i++)      // on récupère les coords
 	{
 		for (int j = 0;j <= instance.nb_client;j++) {
 			fichier >> instance.distance[i][j];
@@ -85,7 +85,7 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 
 
 void tri(T_instance& instance, int i, int depart) {
-	int j = i, stop = 0, temp;								// j : indice de tri   ;   stop : valeur d'arr�t   ;   temp : valuer temporaire
+	int j = i, stop = 0, temp;								// j : indice de tri   ;   stop : valeur d'arrêt   ;   temp : valeur temporaire
 	while (j > 0 && stop != 1) {
 
 		if (instance.distance[depart][instance.V_som[j]] < instance.distance[depart][instance.V_som[j-1]]) {
@@ -128,7 +128,7 @@ void trouver_proches_voisins(T_instance& instance, int liste_sommets_marques[], 
 
 void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee) {
 	tournee.liste_sauts[0] = 0;							// on part de l'entrep�t
-	int Px = 1;											// position du sommet dans L (???)
+	int Px = 1;											// position du sommet dans L
 	int nr = instance.nb_client;
 	int x;
 	int M[nmax] = { 0 };
@@ -154,8 +154,8 @@ void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee) {
 
 
 void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee) {
-	tournee.liste_sauts[0] = 0;							// on part de l'entrep�t
-	int Px = 1;											// position du sommet dans L (???)
+	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
+	int Px = 1;											// position du sommet dans L
 	int nr = instance.nb_client;
 	int x = 0;
 	int M[nmax] = { 0 };
@@ -238,7 +238,7 @@ void afficher_tour_geant(T_tour_geant tournee)
 }
 
 
-void rotation(T_tournee& tournee, int i, int j) //ok
+void rotation(T_tournee& tournee, int i, int j)
 {
 	int temp=0;
 	temp = tournee.liste_sauts[i + 1];
@@ -251,7 +251,8 @@ void rotation(T_tournee& tournee, int i, int j) //ok
 	}
 }
 
-void rotation_inter_tournee(T_tournee& tournee1, T_tournee& tournee2, int i, int j) {//ok
+void rotation_inter_tournee(T_tournee& tournee1, T_tournee& tournee2, int i, int j) 
+{
 	int temp = 0;
 	T_tournee temp1, temp2;
 
@@ -377,11 +378,12 @@ void operateur_2_opt_inter_tournee(T_instance instance, T_tournee& tournee1, T_t
 }
 
 
-void deplacement_sommet(T_instance ins, T_tournee& tournee) {
+void deplacement_sommet(T_instance ins, T_tournee& tournee) 
+{
 	int dist = 0;
 	int indI = 1;
 	int indJ = 3;
-	int minDist;
+	int minDist = 0;
 	bool amelioration = false;
 	
 	for (int i = 1; i <= tournee.nb_sauts; i++) //compte les sommets (hors dépôt)
@@ -391,7 +393,8 @@ void deplacement_sommet(T_instance ins, T_tournee& tournee) {
 		{
 			dist = 0;
 
-			if (i != j && i != j + 1) {
+			if (i != j && i != j + 1) 
+			{
 				dist -= ins.distance[tournee.liste_sauts[i - 1]][tournee.liste_sauts[i]];
 				dist -= ins.distance[tournee.liste_sauts[i]][tournee.liste_sauts[i + 1]];
 				dist -= ins.distance[tournee.liste_sauts[j]][tournee.liste_sauts[j + 1]];
@@ -410,7 +413,8 @@ void deplacement_sommet(T_instance ins, T_tournee& tournee) {
 		}
 	}
 
-	if (!amelioration) {
+	if (!amelioration) 
+	{
 		//on déplace le sommet indI à l'emplacement indJ
 		int s = tournee.liste_sauts[indI];
 		for (int i = indI; i < indJ; i++)
@@ -423,7 +427,8 @@ void deplacement_sommet(T_instance ins, T_tournee& tournee) {
 }
 
 
-void init_tournee(T_tournee& tournee) {
+void init_tournee(T_tournee& tournee) 
+{
 	tournee.type_camion = 0;
 	tournee.cout = 0;
 	tournee.volume = 0;
@@ -505,7 +510,8 @@ bool domine(T_label l1, T_label l2, T_instance ins) // renvoie vrai si l1 domine
 }
 
 
-void tri_labels(T_tour_geant& tg, int indice_sommet) {
+void tri_labels(T_tour_geant& tg, int indice_sommet) 
+{
 	int j = 0; //compteur de labels pour le déplacement
 	int nb_lab = 0;
 	for (int i = 0; i < tg.nb_labels[indice_sommet]; i++)
@@ -525,7 +531,8 @@ void tri_labels(T_tour_geant& tg, int indice_sommet) {
 }
 
 
-void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance) {
+void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance)
+{
 
 	T_label lab;
 	double distance;

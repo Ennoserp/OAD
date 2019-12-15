@@ -77,7 +77,9 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance);
 
 void operateur_2_opt_inter_tournee();
 
-void operateur_2_opt(T_instance& instance, T_tournee& tournee, int it_max);
+void operateur_2_opt(T_instance instance, T_tournee& tournee);
+
+void deplacement_sommet(T_instance ins, T_tournee& tournee);
 
 void initialiser_voisins(T_instance& instance);
 
@@ -113,5 +115,6 @@ void tri_labels(T_tour_geant& tg, int indice_sommet);
 
 void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance);
 
+void recherche_locale(T_instance ins, T_solution sol);
 
 #endif

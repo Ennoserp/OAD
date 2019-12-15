@@ -1,2 +1,9 @@
-﻿  main.cpp
+﻿  hvrp.cpp
+C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(292,6): warning C4101: 'minDist' : variable locale non référencée
+C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(364,80): warning C4244: '+=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(529,22): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(464,10): warning C4101: 'a' : variable locale non référencée
+C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(554,11): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(585,17): warning C4305: '+=' : troncation de 'double' à 'float'
+C:\Users\J-PC\Documents\GitHub\OAD\TP3\hvrp.cpp(590,16): warning C4305: '-=' : troncation de 'double' à 'float'
   HVRP.vcxproj -> C:\Users\J-PC\Documents\GitHub\OAD\TP3\Debug\HVRP.exe

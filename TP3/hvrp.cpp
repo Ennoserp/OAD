@@ -214,7 +214,9 @@ int choix_voisin_aleatoire(int nb_sommets_restants) {
 }
 
 
-void afficher_tournee(T_tournee tournee) {
+void afficher_tournee(T_tournee tournee)
+
+{
 	std::cout << std::endl << "------ TOURNEE ------" << std::endl;
 	std::cout << "Nombre de sauts : " << tournee.nb_sauts << std::endl;
 	std::cout << "Cout de la tournee : " << tournee.cout << std::endl;
@@ -227,7 +229,8 @@ void afficher_tournee(T_tournee tournee) {
 }
 
 
-void afficher_tour_geant(T_tour_geant tournee) {
+void afficher_tour_geant(T_tour_geant tournee) 
+{
 	std::cout << std::endl << "------ TOUR GEANT ------" << std::endl;
 	std::cout << "Nombre de sauts : " << tournee.nb_sauts << std::endl;
 	for (int i = 0; i <= tournee.nb_sauts; i++) {
@@ -236,7 +239,8 @@ void afficher_tour_geant(T_tour_geant tournee) {
 }
 
 
-void rotation(T_tournee& tournee, int i, int j) {				//a l'air OK tier !
+void rotation(T_tournee& tournee, int i, int j) //ok
+{
 	int temp=0;
 	temp = tournee.liste_sauts[i + 1];
 	tournee.liste_sauts[i + 1] = tournee.liste_sauts[j];
@@ -250,30 +254,28 @@ void rotation(T_tournee& tournee, int i, int j) {				//a l'air OK tier !
 }
 
 
-void operateur_2_opt(T_instance& instance,T_tournee& tournee, int it_max)//on parle jamais du volume max
+void operateur_2_opt(T_instance instance,T_tournee& tournee)//ok
 {
-	int it = 0;
 	double delta1, delta2, beta1, beta2, gamma;
-	while (it < it_max) {
 
-		for (int i = 1; i <= instance.nb_client - 2;i++) {
-			delta1 = instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[i + 1]];		// D_b,a
+	for (int i = 1; i <= tournee.nb_sauts - 2; i++) {
+		delta1 = instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[i + 1]];
 
-			for (int j = i + 2; j <= instance.nb_client;j++) {
-				delta2 = instance.distance[tournee.liste_sauts[j]][tournee.liste_sauts[j + 1]];
-				beta1 = instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[j]];
-				beta2 = instance.distance[tournee.liste_sauts[i + 1]][tournee.liste_sauts[j + 1]];
-				gamma = beta1 + beta2 - delta1 - delta2;
+		for (int j = i + 2; j <= tournee.nb_sauts; j++) {
+			delta2 = instance.distance[tournee.liste_sauts[j]][tournee.liste_sauts[j + 1]];
+			beta1 = instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[j]];
+			beta2 = instance.distance[tournee.liste_sauts[i + 1]][tournee.liste_sauts[j + 1]];
+			gamma = beta1 + beta2 - delta1 - delta2;
 
-				if (gamma < 0) {
-					tournee.cout = tournee.cout + gamma;
-					rotation(tournee, i, j);
-				}
+			if (gamma < 0) {
+				tournee.cout = tournee.cout + gamma;
+				rotation(tournee, i, j);
 			}
 		}
-		it++;
-	}
+	}	
 }
+
+
 
 
 void operateur_2_opt_inter_tournee()
@@ -283,22 +285,47 @@ void operateur_2_opt_inter_tournee()
 }
 
 
-void deplacement_sommet(T_tournee tournee) {
-	int nb_restant = tournee.nb_sauts - 2;
-	T_tournee tournee_a_tester;
-	for (int i = 1; i <= tournee.nb_sauts; i++)
+void deplacement_sommet(T_instance ins, T_tournee& tournee) {
+	int dist = 0;
+	int indI = 1;
+	int indJ = 3;
+	int minDist;
+	bool amelioration = false;
+	
+	for (int i = 1; i <= tournee.nb_sauts; i++) //compte les sommets (hors dépôt)
 	{
-		for (int j = 1; j <= nb_restant; j++)
+		
+		for (int j = 1; j <= tournee.nb_sauts + 1; j++)//compte les arcs
 		{
-			init_tournee(tournee_a_tester);
-			//copier tournee et deplacer le sommet i � l'emplacement j
-			//evaluer_tournee(tournee_a_tester);
-			if (tournee_a_tester.cout < tournee.cout) {
-				//Copier tournee_a_tester dans tournee (on garde la tourn�e test�e)
-				copier_tournee(tournee_a_tester, tournee);
-			}
-			
+			dist = 0;
+
+			if (i != j && i != j + 1) {
+				dist -= ins.distance[tournee.liste_sauts[i - 1]][tournee.liste_sauts[i]];
+				dist -= ins.distance[tournee.liste_sauts[i]][tournee.liste_sauts[i + 1]];
+				dist -= ins.distance[tournee.liste_sauts[j]][tournee.liste_sauts[j + 1]];
+
+				dist += ins.distance[tournee.liste_sauts[i - 1]][tournee.liste_sauts[i + 1]];
+				dist += ins.distance[tournee.liste_sauts[j]][tournee.liste_sauts[i]];
+				dist += ins.distance[tournee.liste_sauts[i]][tournee.liste_sauts[j+1]];
+				if (dist < 0 && dist < minDist)
+				{
+					minDist = dist;
+					indI = i;
+					indJ = j;
+					amelioration = true;
+				}
+			}			
 		}
+	}
+	if (!amelioration) {
+		//on déplace le sommet indI à l'emplacement indJ
+		int s = tournee.liste_sauts[indI];
+		for (int i = indI; i < indJ; i++)
+		{
+			tournee.liste_sauts[i] = tournee.liste_sauts[i + 1];
+		}
+		tournee.liste_sauts[indJ] = s;
+		tournee.cout += dist * ins.liste_types[tournee.type_camion].cv;
 	}
 }
 
@@ -337,7 +364,7 @@ void evaluer_tournee(T_tournee& tournee, T_instance instance) //pour calculer la
 		dist += instance.distance[tournee.liste_sauts[i]][tournee.liste_sauts[i + 1]];
 		volume += instance.qte[tournee.liste_sauts[i + 1]];
 	}
-	tournee.cout = instance.liste_types[tournee.type_camion].cf + dist * instance.liste_types[tournee.type_camion].cv;
+	tournee.cout = instance.liste_types[tournee.type_camion].cf + (dist/100) * instance.liste_types[tournee.type_camion].cv;
 	tournee.volume = volume;
 }
 
@@ -439,7 +466,7 @@ void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance) {
 					{
 						copier_label(tour_geant.liste_labels[i-1][labels], lab);
 						//prix du chemin qu'on vient de parcourir auquel on ajoute le prix des chemins précédents
-						lab.prix = instance.liste_types[k].cf + instance.liste_types[k].cv * (distance + instance.distance[0][tour_geant.liste_sauts[i]] + instance.distance[tour_geant.liste_sauts[j]][0]) / 100;//on ajoute le départ et le retour au dépôt
+						lab.prix = instance.liste_types[k].cf + instance.liste_types[k].cv * ((distance + instance.distance[0][tour_geant.liste_sauts[i]] + instance.distance[tour_geant.liste_sauts[j]][0]) / 100);//on ajoute le départ et le retour au dépôt
 						lab.capacite = capacite;											
 						lab.reste_camions[k]--;
 						
@@ -520,40 +547,88 @@ void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance) {
 	}
 }
 
-/*
-void recherche_locale(T_solution sol) 
+
+bool bernoulli(float p)
 {
-	int p1 = 0.5, p2 = 0.5, p3 = 0.5;
-	bool b1, b2, b3;
+	int retour = false, max_nb = 100000;
+	float nb = (rand() % max_nb) / max_nb;
+	if (nb < p)
+	{
+		retour = true;
+	}
+	return retour;
+}
+
+
+void recherche_locale(T_instance ins,T_solution sol) 
+{
+	float p1 = 0.5, p2 = 0.5, p3 = 0.5;
+	int cout = 0;
 	T_tournee tour;
 	for (int i = 0; i < NB_TOUR_MAX; i++)
 	{
-		b1 = b2 = b3 = false;
 
 		//premier opérateur:
 		// 2-opt
-		for (int j = 0; j < nb de sommet dans la tournee; j++)
+		if (bernoulli(p1))
 		{
-			//on réinitialise le tour, on lui applique le 2 opt et 
-			init_tournee(tour);
+			for (int j = 0; j < sol.nb_tournees; j++)
+			{
+				cout = sol.liste_tournees[j].cout;
+				operateur_2_opt(ins, sol.liste_tournees[j]);
 
+				if (sol.liste_tournees[j].cout < cout)
+				{
+					//recalcul du cout total à faire
+					
+
+					//le 2opt a amélioré la solution
+					if (p1 < 1)
+					{
+						p1 += 0.05;
+					}
+
+				}
+				else if (p1 > 0.10) {
+					p1 -= 0.05;
+				}
+			}
 		}
-
 
 		//deuxieme opérateur:
 		// déplacement de sommet
-		for (size_t i = 0; i < length; i++)
+		if (bernoulli(p2))
 		{
+			for (int j = 0; j < sol.nb_tournees; j++)
+			{
+				cout = sol.liste_tournees[j].cout;
+				deplacement_sommet(ins, sol.liste_tournees[j]);
+				if (sol.liste_tournees[j].cout < cout)
+				{
+					//le déplcement a amélioré la solution
+					if (p2 < 1)
+					{
+						p2 += 0.05;
+					}
 
+				}
+				else if (p2 > 0.10) {
+					p2 -= 0.05;
+				}
+			}
+			
 		}
 
 
 		//troisième opérateur:
 		// 2-opt inter
+		if (bernoulli(p3))
+		{
 
+		}
 
 
 			   
 
 	}
-}*/
+}

@@ -69,13 +69,14 @@ typedef struct T_solution {
 	T_tournee liste_tournees[nmaxtournee];	    	// liste des tournées à réaliser
 }T_solution;
 
+
 void lire_instance_type1(std::string nom_fichier, T_instance& instance);
 
 void lire_instance_type2(std::string nom_fichier, T_instance& instance);
 
-void operateur_2_opt_inter_tournee_bis(T_instance& instance, T_tournee& tournee1, T_tournee& tournee2, int it_max);
+void operateur_2_opt(T_instance instance, T_tournee& tournee);
 
-void operateur_2_opt(T_instance& instance, T_tournee& tournee, int it_max);
+void deplacement_sommet(T_instance ins, T_tournee& tournee);
 
 void initialiser_voisins(T_instance& instance);
 
@@ -84,12 +85,15 @@ void trouver_proches_voisins(T_instance& instance,int sommets_restants[], int de
 void tri(T_instance& instance, int i, int depart);
 
 void rotation(T_tournee& tournee, int i, int j);
+
 void rotation_inter_tournee(T_tournee& tournee1, T_tournee& tournee2, int i, int j);
 
 void vider_tournee_sup_i(T_tournee& tournee, int i);
 
 void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee);
+
 void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee);
+
 void tour_geant_ordre_num(T_instance& instance, T_tour_geant& tournee);
 
 void operateur_2_opt_inter_tournee(T_instance& instance, T_tournee& tournee1, T_tournee& tournee2, int it_max);
@@ -114,5 +118,6 @@ void tri_labels(T_tour_geant& tg, int indice_sommet);
 
 void SPLIT(T_tour_geant& tour_geant, T_solution& sol, T_instance& instance);
 
+void recherche_locale(T_instance ins, T_solution sol);
 
 #endif

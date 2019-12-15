@@ -288,7 +288,7 @@ void vider_tournee_sup_i(T_tournee& tournee, int i)
 }
 
 
-void operateur_2_opt(T_instance instance,T_tournee& tournee)//ok
+void operateur_2_opt(T_instance instance,T_tournee& tournee)
 {
 	double delta1, delta2, beta1, beta2, gamma;
 
@@ -313,72 +313,67 @@ void operateur_2_opt(T_instance instance,T_tournee& tournee)//ok
 }
 
 
-void operateur_2_opt_inter_tournee(T_instance& instance, T_tournee& tournee1, T_tournee& tournee2, int it_max) 
+void operateur_2_opt_inter_tournee(T_instance instance, T_tournee& tournee1, T_tournee& tournee2) 
 {
-	int it = 0, dist_temp = 0, v1 = 0, v2 = 0, capatemp = 0;
+	int dist_temp = 0, v1 = 0, v2 = 0, capatemp = 0;
 	int dist_1 = 0, dist_2 = 0;
 	double cout_1 = 0., cout_2 = 0.;
-
-	while (it < it_max) 
+		
+	for (int i = 1; i <= tournee1.nb_sauts - 1; i++) 
 	{
-		for (int i = 1; i <= tournee1.nb_sauts - 1; i++) 
+		dist_1 = 0;
+		v1 = 0;
+		for (int u = 0; u < i; u++) 
 		{
-			dist_1 = 0;
-			v1 = 0;
-			for (int u = 0; u < i; u++) 
+			dist_1 = dist_1 + instance.distance[tournee1.liste_sauts[u]][tournee1.liste_sauts[u + 1]];
+			v1 = v1 + instance.qte[tournee1.liste_sauts[u + 1]];
+		}
+		dist_temp = dist_1;
+		capatemp = v1;
+		for (int j = 1; j <= tournee2.nb_sauts - 1; j++) 
+		{
+			dist_2 = 0;
+			v2 = 0;
+			dist_1 = dist_temp;
+			v1 = capatemp;
+
+			for (int u = 0; u < j; u++) 
 			{
-				dist_1 = dist_1 + instance.distance[tournee1.liste_sauts[u]][tournee1.liste_sauts[u + 1]];
-				v1 = v1 + instance.qte[tournee1.liste_sauts[u + 1]];
+				dist_2 = dist_2 + instance.distance[tournee2.liste_sauts[u]][tournee2.liste_sauts[u + 1]];
+				v2 = v2 + instance.qte[tournee2.liste_sauts[u + 1]];
 			}
-			dist_temp = dist_1;
-			capatemp = v1;
-			for (int j = 1; j <= tournee2.nb_sauts - 1; j++) 
+
+
+			dist_1 = dist_1 + instance.distance[tournee1.liste_sauts[i]][tournee2.liste_sauts[j + 1]];
+			v1 = v1 + instance.qte[tournee1.liste_sauts[j + 1]];
+			for (int k = 1; k <= tournee2.nb_sauts - j; k++) 
 			{
-				dist_2 = 0;
-				v2 = 0;
-				dist_1 = dist_temp;
-				v1 = capatemp;
-
-				for (int u = 0; u < j; u++) 
-				{
-					dist_2 = dist_2 + instance.distance[tournee2.liste_sauts[u]][tournee2.liste_sauts[u + 1]];
-					v2 = v2 + instance.qte[tournee2.liste_sauts[u + 1]];
-				}
+				dist_1 = dist_1 + instance.distance[tournee2.liste_sauts[j + k]][tournee2.liste_sauts[j + k + 1]];
+				v1 = v1 + instance.qte[tournee1.liste_sauts[j + k + 1]];
+			}
 
 
-				dist_1 = dist_1 + instance.distance[tournee1.liste_sauts[i]][tournee2.liste_sauts[j + 1]];
-				v1 = v1 + instance.qte[tournee1.liste_sauts[j + 1]];
-				for (int k = 1; k <= tournee2.nb_sauts - j; k++) 
-				{
-					dist_1 = dist_1 + instance.distance[tournee2.liste_sauts[j + k]][tournee2.liste_sauts[j + k + 1]];
-					v1 = v1 + instance.qte[tournee1.liste_sauts[j + k + 1]];
-				}
+			dist_2 = dist_2 + instance.distance[tournee2.liste_sauts[j]][tournee1.liste_sauts[i + 1]];
+			v2 = v2 + instance.qte[tournee2.liste_sauts[i + 1]];
+			for (int k = 1; k <= tournee1.nb_sauts - i; k++) 
+			{
+				dist_2 = dist_2 + instance.distance[tournee1.liste_sauts[i + k]][tournee1.liste_sauts[i + k + 1]];
+				v2 = v2 + instance.qte[tournee2.liste_sauts[i + k + 1]];
+			}
 
+			cout_1 = instance.liste_types[tournee1.type_camion].cf + (dist_1/100) * instance.liste_types[tournee1.type_camion].cv;
+			cout_2 = instance.liste_types[tournee2.type_camion].cf + (dist_2/100) * instance.liste_types[tournee2.type_camion].cv;
 
-				dist_2 = dist_2 + instance.distance[tournee2.liste_sauts[j]][tournee1.liste_sauts[i + 1]];
-				v2 = v2 + instance.qte[tournee2.liste_sauts[i + 1]];
-				for (int k = 1; k <= tournee1.nb_sauts - i; k++) 
-				{
-					dist_2 = dist_2 + instance.distance[tournee1.liste_sauts[i + k]][tournee1.liste_sauts[i + k + 1]];
-					v2 = v2 + instance.qte[tournee2.liste_sauts[i + k + 1]];
-				}
-
-				cout_1 = instance.liste_types[tournee1.type_camion].cf + (dist_1/100) * instance.liste_types[tournee1.type_camion].cv;
-				cout_2 = instance.liste_types[tournee2.type_camion].cf + (dist_2/100) * instance.liste_types[tournee2.type_camion].cv;
-
-				if (((cout_1 <= tournee1.cout) && (cout_2 <= tournee2.cout)) && ((v1 <= instance.liste_types[tournee1.type_camion].capacite) && (v2 <= instance.liste_types[tournee2.type_camion].capacite)))
-				{
-					tournee1.cout = cout_1;
-					tournee2.cout = cout_2;
-					instance.liste_types[tournee1.type_camion].capacite = v1;
-					instance.liste_types[tournee2.type_camion].capacite = v2;
-					rotation_inter_tournee(tournee1, tournee2, i, j);
-					std::cout << std::endl << std::endl << "/!\\ _____ Tournee amelioree _____ /!\\";
-				}
+			if (((cout_1 <= tournee1.cout) && (cout_2 <= tournee2.cout)) && ((v1 <= instance.liste_types[tournee1.type_camion].capacite) && (v2 <= instance.liste_types[tournee2.type_camion].capacite)))
+			{
+				tournee1.cout = cout_1;
+				tournee2.cout = cout_2;
+				instance.liste_types[tournee1.type_camion].capacite = v1;
+				instance.liste_types[tournee2.type_camion].capacite = v2;
+				rotation_inter_tournee(tournee1, tournee2, i, j);
 			}
 		}
-		it++;
-	}
+	}	
 }
 
 
@@ -414,6 +409,7 @@ void deplacement_sommet(T_instance ins, T_tournee& tournee) {
 			}			
 		}
 	}
+
 	if (!amelioration) {
 		//on déplace le sommet indI à l'emplacement indJ
 		int s = tournee.liste_sauts[indI];
@@ -660,7 +656,7 @@ bool bernoulli(float p)
 void recherche_locale(T_instance ins,T_solution sol) 
 {
 	float p1 = 0.5, p2 = 0.5, p3 = 0.5;
-	int cout = 0;
+	int cout = 0, cout2 = 0;
 	T_tournee tour;
 	for (int i = 0; i < NB_TOUR_MAX; i++)
 	{
@@ -676,8 +672,8 @@ void recherche_locale(T_instance ins,T_solution sol)
 
 				if (sol.liste_tournees[j].cout < cout)
 				{
-					//recalcul du cout total à faire
-					
+					//recalcul du cout total
+					sol.cout_total -= cout - sol.liste_tournees[j].cout;
 
 					//le 2opt a amélioré la solution
 					if (p1 < 1)
@@ -702,7 +698,10 @@ void recherche_locale(T_instance ins,T_solution sol)
 				deplacement_sommet(ins, sol.liste_tournees[j]);
 				if (sol.liste_tournees[j].cout < cout)
 				{
-					//le déplcement a amélioré la solution
+					//recalcul du cout total
+					sol.cout_total -= cout - sol.liste_tournees[j].cout;
+
+					//le déplacement a amélioré la solution
 					if (p2 < 1)
 					{
 						p2 += 0.05;
@@ -718,14 +717,41 @@ void recherche_locale(T_instance ins,T_solution sol)
 
 
 		//troisième opérateur:
-		// 2-opt inter
+		// 2-opt inter-tournées
 		if (bernoulli(p3))
 		{
+			for (int j = 0; j < sol.nb_tournees; j++)
+			{
+				for (int k = 0; k < sol.nb_tournees; k++)
+				{
+					if (j != k)
+					{
+						cout = sol.liste_tournees[j].cout;
+						cout = sol.liste_tournees[k].cout;
 
+						operateur_2_opt_inter_tournee(ins, sol.liste_tournees[j], sol.liste_tournees[k]); 
+
+						if (sol.liste_tournees[j].cout < cout && sol.liste_tournees[k].cout < cout2)
+						{
+							//recalcul du cout total
+							sol.cout_total -= cout - sol.liste_tournees[j].cout;
+
+							//le déplacement a amélioré la solution
+							if (p3 < 1)
+							{
+								p3 += 0.05;
+							}
+
+						}
+						else if (p3 > 0.10) {
+							p3 -= 0.05;
+						}
+					}
+				}
+			}
 		}
 
 
-			   
 
 	}
 }

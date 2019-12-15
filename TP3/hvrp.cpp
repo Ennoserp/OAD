@@ -84,7 +84,8 @@ void lire_instance_type2(std::string nom_fichier, T_instance& instance) {
 }
 
 
-void tri(T_instance& instance, int i, int depart) {
+void tri(T_instance& instance, int i, int depart) 
+{
 	int j = i, stop = 0, temp;								// j : indice de tri   ;   stop : valeur d'arrêt   ;   temp : valeur temporaire
 	while (j > 0 && stop != 1) {
 
@@ -101,7 +102,8 @@ void tri(T_instance& instance, int i, int depart) {
 }
 
 
-void initialiser_voisins(T_instance& instance) {
+void initialiser_voisins(T_instance& instance)
+{
 	for (int i = 0; i < 6;i++) {
 		instance.V_som[i] = 99999;
 	}
@@ -126,7 +128,8 @@ void trouver_proches_voisins(T_instance& instance, int liste_sommets_marques[], 
 }
 
 
-void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee) {
+void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee)
+{
 	tournee.liste_sauts[0] = 0;							// on part de l'entrep�t
 	int Px = 1;											// position du sommet dans L
 	int nr = instance.nb_client;
@@ -134,11 +137,13 @@ void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee) {
 	int M[nmax] = { 0 };
 	int L[nmax];
 
-	for (int i = 0; i <= instance.nb_client; i++) {
+	for (int i = 0; i <= instance.nb_client; i++) 
+	{
 		L[i] = i;
 	}
 
-	for (int i = 1; i < instance.nb_client + 1; i++) { 
+	for (int i = 1; i < instance.nb_client + 1; i++) 
+	{ 
 		x = tournee.liste_sauts[i - 1];
 		M[x] = 1;
 		L[Px] = L[nr];
@@ -153,7 +158,8 @@ void tour_geant_ppv(T_instance& instance, T_tour_geant& tournee) {
 }
 
 
-void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee) {
+void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee) 
+{
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepôt
 	int Px = 1;											// position du sommet dans L
 	int nr = instance.nb_client;
@@ -181,7 +187,8 @@ void tour_geant_ppvrand(T_instance& instance, T_tour_geant& tournee) {
 }
 
 
-void tour_geant_ordre_num(T_instance& instance, T_tour_geant& tournee) {
+void tour_geant_ordre_num(T_instance& instance, T_tour_geant& tournee) 
+{
 	tournee.liste_sauts[0] = 0;							// on part de l'entrepot
 	for (int i = 1; i < instance.nb_client + 1; i++) { 
 		tournee.liste_sauts[i] = i;
@@ -204,7 +211,8 @@ int choix_voisin_aleatoire(int nb_sommets_restants) {
 		}
 		else {
 			i++;
-			if (i == 4 || i == nb_sommets_restants) {
+			if (i == 4 || i == nb_sommets_restants) 
+			{
 				retour = nb_sommets_restants;
 				stop = 1;
 			}
@@ -244,7 +252,8 @@ void rotation(T_tournee& tournee, int i, int j)
 	temp = tournee.liste_sauts[i + 1];
 	tournee.liste_sauts[i + 1] = tournee.liste_sauts[j];
 	tournee.liste_sauts[j] = temp;
-	for (int k = 1; k <= (j - i - 1)/2; k++) {
+	for (int k = 1; k <= (j - i - 1)/2; k++) 
+	{
 		temp = tournee.liste_sauts[i + k + 1];
 		tournee.liste_sauts[i + k + 1] = tournee.liste_sauts[j - k];
 		tournee.liste_sauts[j - k] = temp;

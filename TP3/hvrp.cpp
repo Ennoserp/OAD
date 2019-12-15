@@ -381,7 +381,7 @@ void deplacement_sommet(T_instance ins, T_tournee& tournee) {
 	int dist = 0;
 	int indI = 1;
 	int indJ = 3;
-	int minDist;
+	int minDist = 0;
 	bool amelioration = false;
 	
 	for (int i = 1; i <= tournee.nb_sauts; i++) //compte les sommets (hors dépôt)
